@@ -1,0 +1,261 @@
+<!doctype html>
+<head><meta charset="utf-8"></head><body>
+
+<script src="https://bterlson.github.io/ecmarkup/ecmarkup.js"></script>
+<link rel="stylesheet" href="https://bterlson.github.io/ecmarkup/elements.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/8.4/styles/solarized_light.min.css">
+
+<title>Intl.ListFormat Specification Proposal</title>
+
+<h1 class="orange">Proposal Details</h1>
+<h3 class="orange">Current Stage: 0 / Oct 2015</h3>
+
+<emu-import href="./listformat.html"><emu-clause id="listformat-objects">
+  <h1><span class="secnum">1</span>ListFormat Objects<span class="utils"><span class="anchor"><a href="#listformat-objects">#</a></span></span></h1>
+
+  <emu-clause id="sec-intl-listformat-constructor">
+    <h1><span class="secnum">1.1</span>The Intl.ListFormat Constructor<span class="utils"><span class="anchor"><a href="#sec-intl-listformat-constructor">#</a></span></span></h1>
+
+    <p>
+      The ListFormat constructor is a standard built-in property of the Intl object. Behaviour common to all service constructor properties of the Intl object is specified in  <emu-xref href="#sec-internal-slots"></emu-xref>.
+    
+    </p>
+
+    <emu-clause id="sec-InitializeListFormat" aoid="InitializeListFormat">
+      <h1><span class="secnum">1.1.1</span>InitializeListFormat (listFormat, locales, options)<span class="utils"><span class="anchor"><a href="#sec-InitializeListFormat">#</a></span></span></h1>
+
+      <p>
+        The abstract operation InitializeListFormat accepts the arguments <var>listFormat</var> (which must be an object), <var>locales</var>, and <var>options</var>. It initializes <var>listFormat</var> as a ListFormat object.
+      
+      </p>
+
+      <p>
+        The following steps are taken:
+      
+      </p>
+
+      <emu-alg><ol><li>If <var>listFormat</var> has an [[initializedIntlObject]] internal slot with value <emu-val>true</emu-val>, throw a <emu-val>TypeError</emu-val> exception.</li><li>Set <var>listFormat</var>.[[initializedIntlObject]] to <emu-val>true</emu-val>.</li><li>Let <var>requestedLocales</var> be CanonicalizeLocaleList(<var>locales</var>).</li><li><a href="http://www.ecma-international.org/ecma-262/6.0/index.html#sec-returnifabrupt">ReturnIfAbrupt</a>(<var>requestedLocales</var>).</li><li>If <var>options</var> is <emu-val>undefined</emu-val>, then<ol><li>Let <var>options</var> be <a href="http://www.ecma-international.org/ecma-262/6.0/index.html#sec-objectcreate">ObjectCreate</a>(<emu-val>%ObjectPrototype%</emu-val>).</li></ol></li><li>Else<ol><li>Let <var>options</var> be <a href="http://www.ecma-international.org/ecma-262/6.0/index.html#sec-toobject">ToObject</a>(<var>options</var>).</li><li><a href="http://www.ecma-international.org/ecma-262/6.0/index.html#sec-returnifabrupt">ReturnIfAbrupt</a>(<var>options</var>).</li></ol></li><li>Let <var>opt</var> be a new Record.</li><li>Let <var>matcher</var> be GetOption(<var>options</var>, <emu-val>"localeMatcher"</emu-val>, <emu-val>"string"</emu-val>, «<emu-val>"lookup"</emu-val>, <emu-val>"best fit"</emu-val>», <emu-val>"best fit"</emu-val>).</li><li><a href="http://www.ecma-international.org/ecma-262/6.0/index.html#sec-returnifabrupt">ReturnIfAbrupt</a>(<var>matcher</var>).</li><li>Set <var>opt</var>.[[localeMatcher]] to <var>matcher</var>.</li><li>Let <var>localeData</var> be <emu-val>%ListFormat%</emu-val>.[[localeData]].</li><li>Let <var>r</var> be ResolveLocale(<emu-val>%ListFormat%</emu-val>.[[availableLocales]], <var>requestedLocales</var>, <var>opt</var>, <emu-val>%ListFormat%</emu-val>.[[relevantExtensionKeys]], <var>localeData</var>).</li><li>Set <var>listFormat</var>.[[locale]] to the value of <var>r</var>.[[locale]].</li><li>Let <var>dataLocale</var> be <var>r</var>.[[dataLocale]].</li><li>Let <var>s</var> be GetOption(<var>options</var>, <emu-val>"style"</emu-val>, <emu-val>"string"</emu-val>, «<emu-val>"regular"</emu-val>, <emu-val>"duration"</emu-val>, <emu-val>"duration-short"</emu-val>, <emu-val>"duration-narrow"</emu-val>, <emu-val>"number"</emu-val>», <emu-val>"regular"</emu-val>).</li><li><a href="http://www.ecma-international.org/ecma-262/6.0/index.html#sec-returnifabrupt">ReturnIfAbrupt</a>(<var>s</var>).</li><li>Set <var>listFormat</var>.[[style]] to <var>s</var>.</li><li>Let <var>dataLocaleData</var> be <a href="http://www.ecma-international.org/ecma-262/6.0/index.html#sec-get-o-p">Get</a>(<var>localeData</var>, <var>dataLocale</var>).</li><li>Let <var>listFormat</var> be <a href="http://www.ecma-international.org/ecma-262/6.0/index.html#sec-get-o-p">Get</a>(<var>dataLocaleData</var>, <emu-val>"listFormat"</emu-val>).</li><li>Assert: <var>listFormat</var> is an object (see <emu-xref href="#sec-Intl.ListFormat-internal-slots"><a href="#sec-Intl.ListFormat-internal-slots">1.2.3</a></emu-xref>).</li><li>Set <var>listFormat</var>.[[listFormat]] to <a href="http://www.ecma-international.org/ecma-262/6.0/index.html#sec-get-o-p">Get</a>(<var>listFormat</var>, s).</li><li>Set <var>listFormat</var>.[[boundResolve]] to <emu-val>undefined</emu-val>.</li><li>Set <var>listFormat</var>.[[initializedListFormat]] to <emu-val>true</emu-val>.</li><li>Return <var>listFormat</var>.
+      </li></ol></emu-alg>
+
+    </emu-clause>
+
+    <emu-clause id="sec-Intl.ListFormat">
+      <h1><span class="secnum">1.1.2</span>Intl.ListFormat([ locales [, options]])<span class="utils"><span class="anchor"><a href="#sec-Intl.ListFormat">#</a></span></span></h1>
+
+      <p>
+        When the <emu-val>Intl.ListFormat</emu-val> function is called with optional arguments the following steps are taken:
+      
+      </p>
+
+      <emu-alg><ol><li>If NewTarget is <emu-val>undefined</emu-val>, let <var>newTarget</var> be the active function object, else let <var>newTarget</var> be NewTarget.</li><li>Let <var>listFormat</var> be <a href="http://www.ecma-international.org/ecma-262/6.0/index.html#sec-ordinarycreatefromconstructor">OrdinaryCreateFromConstructor</a>(<var>newTarget</var>, <emu-val>%ListFormatPrototype%</emu-val>).</li><li><a href="http://www.ecma-international.org/ecma-262/6.0/index.html#sec-returnifabrupt">ReturnIfAbrupt</a>(<var>listFormat</var>).</li><li>Return <a href="#sec-InitializeListFormat">InitializeListFormat</a>(<var>listFormat</var>, <var>locales</var>, <var>options</var>).
+      </li></ol></emu-alg>
+    </emu-clause>
+  </emu-clause>
+
+  <emu-clause id="sec-properties-of-intl-listformat-constructor">
+    <h1><span class="secnum">1.2</span>Properties of the Intl.ListFormat Constructor<span class="utils"><span class="anchor"><a href="#sec-properties-of-intl-listformat-constructor">#</a></span></span></h1>
+
+    <p>
+      Besides the internal slots and the <emu-val>length</emu-val> property (whose value is 0), the Intl.ListFormat constructor has the following properties:
+    
+    </p>
+
+    <emu-clause id="sec-Intl.ListFormat.prototype">
+      <h1><span class="secnum">1.2.1</span>Intl.ListFormat.prototype<span class="utils"><span class="anchor"><a href="#sec-Intl.ListFormat.prototype">#</a></span></span></h1>
+
+      <p>
+        The value of <emu-val>Intl.ListFormat.prototype</emu-val> is <emu-val>%ListFormatPrototype%</emu-val>.
+      
+      </p>
+      <p>
+        This property has the attributes { [[Writable]]: <emu-val>false</emu-val>, [[Enumerable]]: <emu-val>false</emu-val>, [[Configurable]]: <emu-val>false</emu-val> }.
+      
+      </p>
+    </emu-clause>
+
+    <emu-clause id="sec-Intl.ListFormat.supportedLocalesOf">
+      <h1><span class="secnum">1.2.2</span>Intl.ListFormat.supportedLocalesOf (locales [, options ])<span class="utils"><span class="anchor"><a href="#sec-Intl.ListFormat.supportedLocalesOf">#</a></span></span></h1>
+
+      <p>
+        When the <emu-val>supportedLocalesOf</emu-val> method of <emu-val>%ListFormat%</emu-val> is called, the following steps are taken:
+      
+      </p>
+
+      <emu-alg><ol><li>Let <var>availableLocales</var> be <emu-val>%ListFormat%</emu-val>.[[availableLocales]].</li><li>Let <var>requestedLocales</var> be CanonicalizeLocaleList(<var>locales</var>).</li><li>Return SupportedLocales(<var>availableLocales</var>, <var>requestedLocales</var>, <var>options</var>).
+      </li></ol></emu-alg>
+
+      <p>
+        The value of the <emu-val>length</emu-val> property of the <emu-val>supportedLocalesOf</emu-val> method is 1.
+      
+      </p>
+    </emu-clause>
+
+    <emu-clause id="sec-Intl.ListFormat-internal-slots">
+      <h1><span class="secnum">1.2.3</span>Internal slots<span class="utils"><span class="anchor"><a href="#sec-Intl.ListFormat-internal-slots">#</a></span></span></h1>
+
+      <p>
+        The value of the [[availableLocales]] internal slot is implementation defined within the constraints described in  <emu-xref href="#sec-internal-slots"></emu-xref>.
+      
+      </p>
+
+      <p>
+        The value of the [[relevantExtensionKeys]] internal slot is <emu-val>["pr"]</emu-val>.
+      
+      </p>
+
+      <p>
+        The value of the [[localeData]] internal slot is implementation defined within the constraints described in  <emu-xref href="#sec-internal-slots"></emu-xref> and the following additional constraints:
+      
+      </p>
+
+      <ul>
+        <li>[[localeData]][locale] must have a listFormat property for all locale values. The value of this property must be an object, which must have properties with the names of the five list formatting styles: <emu-val>"regular"</emu-val>, <emu-val>"duration"</emu-val>, <emu-val>"duration-short"</emu-val>, <emu-val>"duration-narrow</emu-val>" and <emu-val>"number"</emu-val>. Properties <emu-val>"regular"</emu-val>, <emu-val>"duration"</emu-val>, <emu-val>"duration-short"</emu-val> and <emu-val>"duration-narrow</emu-val>" must be objects themselves, and each must have properties with names of the templates: <emu-val>"2"</emu-val>, <emu-val>"start"</emu-val>, <emu-val>"middle"</emu-val> and <emu-val>"end</emu-val>. Each of those properties must be a template string as specified in LDML <emu-xref href="#sec-list-and-record-specification-type"><a href="http://www.ecma-international.org/ecma-262/6.0/index.html#sec-list-and-record-specification-type">List</a></emu-xref> Format Rules. Property <emu-val>"number"</emu-val> must have a string value with a corresponding template string as specified in LDML <emu-xref href="#sec-list-and-record-specification-type"><a href="http://www.ecma-international.org/ecma-262/6.0/index.html#sec-list-and-record-specification-type">List</a></emu-xref> Format Rules.</li>
+      </ul>
+
+      <emu-note><span class="note">Note</span>
+        It is recommended that implementations use the locale data provided by the Common Locale Data Repository (available at  <a href="http://cldr.unicode.org/">http://cldr.unicode.org/</a>).
+      
+      </emu-note>
+    </emu-clause>
+  </emu-clause>
+
+  <emu-clause id="sec-properties-of-intl-listformat-prototype-object">
+    <h1><span class="secnum">1.3</span>Properties of the Intl.ListFormat Prototype Object<span class="utils"><span class="anchor"><a href="#sec-properties-of-intl-listformat-prototype-object">#</a></span></span></h1>
+
+    <p>
+      The Intl.ListFormat prototype object is itself an Intl.ListFormat instance as specified in  <emu-xref href="#sec-properties-of-intl-listformat-instances"><a href="#sec-properties-of-intl-listformat-instances">1.4</a></emu-xref>, whose internal slots are set as if it had been constructed by the expression <emu-xref aoid="Construct"><a href="http://www.ecma-international.org/ecma-262/6.0/index.html#sec-construct">Construct</a></emu-xref>(<emu-val>%ListFormat%</emu-val>).
+    
+    </p>
+    <p>
+      In the following descriptions of functions that are properties or [[Get]] attributes of properties of <emu-val>%ListFormatPrototype%</emu-val>, the phrase "this ListFormat object" refers to the object that is the this  value for the invocation of the function; a <emu-val>TypeError</emu-val> exception is thrown if the this value is not an object or an object that does not have an [[initializedListFormat]] internal slot with value <emu-val>true</emu-val>.
+    
+    </p>
+
+    <emu-clause id="sec-Intl.ListFormat.prototype.constructor">
+      <h1><span class="secnum">1.3.1</span>Intl.ListFormat.prototype.constructor<span class="utils"><span class="anchor"><a href="#sec-Intl.ListFormat.prototype.constructor">#</a></span></span></h1>
+
+      <p>
+        The initial value of <emu-val>Intl.ListFormat.prototype.constructor</emu-val> is <emu-val>%ListFormat%</emu-val>.
+      
+      </p>
+    </emu-clause>
+
+    <emu-clause id="sec-Intl.ListFormat.prototype-toStringTag">
+      <h1><span class="secnum">1.3.2</span>Intl.ListFormat.prototype[@@toStringTag]<span class="utils"><span class="anchor"><a href="#sec-Intl.ListFormat.prototype-toStringTag">#</a></span></span></h1>
+
+      <p>
+        The initial value of the @@toStringTag property is the string value <emu-val>"Object"</emu-val>.
+      
+      </p>
+      <p>
+        This property has the attributes { [[Writable]]: <emu-val>false</emu-val>, [[Enumerable]]: <emu-val>false</emu-val>, [[Configurable]]: <emu-val>true</emu-val> }.
+      
+      </p>
+    </emu-clause>
+
+    <emu-clause id="sec-Intl.ListFormat.prototype.format">
+      <h1><span class="secnum">1.3.3</span>Intl.ListFormat.prototype.format<span class="utils"><span class="anchor"><a href="#sec-Intl.ListFormat.prototype.format">#</a></span></span></h1>
+
+      <p>
+      This named accessor property returns a function that formats a list according to the effective locale and the formatting options of this ListFormat object.
+      
+      </p>
+      <p>
+        The value of the [[Get]] attribute is a function that takes the following steps:
+      
+      </p>
+
+      <emu-alg><ol><li>Let <var>pf</var> be this ListFormat object.</li><li>If <var>pf</var>.[[boundResolve]] is <emu-val>undefined</emu-val>, then<ol><li>Let <var>F</var> be a new built-in function object as defined in <emu-xref href="#sec-list-format-functions"><a href="#sec-list-format-functions">1.3.4</a></emu-xref>.</li><li>The value of <var>F</var>’s <emu-val>length</emu-val> property is 1.</li><li>Let <var>bf</var> be <a href="http://www.ecma-international.org/ecma-262/6.0/index.html#sec-boundfunctioncreate">BoundFunctionCreate</a>(<var>F</var>, «<emu-val>this</emu-val> value»).</li><li>Set <var>pf</var>.[[boundResolve]] to <var>bf</var>.</li></ol></li><li>Return <var>pf</var>.[[boundResolve]].
+      </li></ol></emu-alg>
+
+      <emu-note><span class="note">Note</span>
+        The function returned by [[Get]] is bound to this ListFormat object so that it can be passed directly to Array.prototype.map or other functions.
+      
+      </emu-note>
+
+      <p>
+        The value of the [[Set]] attribute is <emu-val>undefined</emu-val>.
+      
+      </p>
+    </emu-clause>
+
+    <emu-clause id="sec-list-format-functions">
+      <h1><span class="secnum">1.3.4</span>List Format Functions<span class="utils"><span class="anchor"><a href="#sec-list-format-functions">#</a></span></span></h1>
+
+      <p>
+        A ListFormat select function is an anonymous function that takes one argument value, and performs the following steps:
+      
+      </p>
+
+      <emu-alg><ol><li>Let <var>listFormat</var> be the <emu-val>this</emu-val> value.</li><li>Assert: <a href="http://www.ecma-international.org/ecma-262/6.0/index.html#sec-ecmascript-data-types-and-values">Type</a>(<var>listFormat</var>) is Object and <var>listFormat</var> has an [[initializedListFormat]] internal slot whose value is <emu-val>true</emu-val>.</li><li>If <var>value</var> is not provided or is <emu-val>undefined</emu-val>, then<ol><li>Let <var>value</var> be a new empty <emu-xref href="#sec-list-and-record-specification-type"><a href="http://www.ecma-international.org/ecma-262/6.0/index.html#sec-list-and-record-specification-type">List</a></emu-xref>.</li></ol></li><li>Else<ol><li>Let <var>value</var> be <a href="http://www.ecma-international.org/ecma-262/6.0/index.html#sec-createarrayfromlist">CreateArrayFromList</a>(<var>value</var>)</li></ol></li><li>Return FormatList(<var>listFormat</var>, <var>value</var>).
+      </li></ol></emu-alg>
+
+      <p>
+        When the ListFormat abstract operation is called with arguments <var>listFormat</var> (which must be an object initialized as a ListFormat) and <var>value</var> (which must be a <emu-xref href="#sec-list-and-record-specification-type"><a href="http://www.ecma-international.org/ecma-262/6.0/index.html#sec-list-and-record-specification-type">List</a></emu-xref> value), it returns a String value representing the formatted list of elements in <var>value</var> according to the effective locale and the options of <var>listFormat</var>.
+      
+      </p>
+
+      <p>
+        The computations rely on String values and locations within numeric strings that are dependent upon the implementation and the effective locale of <var>listFormat</var> (“ILD") or upon the implementation. The ILD String mentioned, must not contain any characters in the General Category “Number, decimal digit" as specified by the Unicode Standard.
+      
+      </p>
+
+      <emu-note><span class="note">Note</span>
+        It is recommended that implementations use the locale data provided by the Common Locale Data Repository (available at  <a href="http://cldr.unicode.org/">http://cldr.unicode.org/</a>).
+      
+      </emu-note>
+
+      <p>
+        The following steps are taken:
+      
+      </p>
+
+      <emu-alg aoid="FormatList"><ol><li>Let <var>formatListFunction</var> be the value of <var>listFormat</var>.[[listFormat]].</li><li>Let <var>result</var> be <var>formatListFunction</var>(<var>n</var>).</li><li>Return <var>result</var>.
+      </li></ol></emu-alg>
+    </emu-clause>
+
+    <emu-clause id="sec-Intl.ListFormat.prototype.resolvedOptions">
+      <h1><span class="secnum">1.3.5</span>Intl.ListFormat.prototype.resolvedOptions ()<span class="utils"><span class="anchor"><a href="#sec-Intl.ListFormat.prototype.resolvedOptions">#</a></span></span></h1>
+
+      <p>
+        This function provides access to the locale and options computed during initialization of the object.
+      
+      </p>
+      <p>
+        The function returns a new object whose properties and attributes are set as if constructed by an object literal assigning to each of the following properties the value of the corresponding internal slot of this ListFormat object (see  <emu-xref href="#sec-properties-of-intl-listformat-instances"><a href="#sec-properties-of-intl-listformat-instances">1.4</a></emu-xref>): locale and style. Properties whose corresponding internal slots are not present are not assigned.
+      
+      </p>
+    </emu-clause>
+  </emu-clause>
+
+  <emu-clause id="sec-properties-of-intl-listformat-instances">
+    <h1><span class="secnum">1.4</span>Properties of Intl.ListFormat Instances<span class="utils"><span class="anchor"><a href="#sec-properties-of-intl-listformat-instances">#</a></span></span></h1>
+
+    <p>
+      Intl.ListFormat instances inherit properties from <emu-val>%ListFormatPrototype%</emu-val>.
+    
+    </p>
+
+    <p>
+      Intl.ListFormat instances and other objects that have been successfully initialized as a ListFormat have [[initializedIntlObject]] and [[initializedListFormat]] internal slots whose values are <emu-val>true</emu-val>.
+    
+    </p>
+
+    <p>
+      Objects that have been successfully initialized as a ListFormat object also have several internal slots that are computed by the constructor:
+    
+    </p>
+
+    <ul>
+      <li>[[locale]] is a String value with the language tag of the locale whose localization is used by the list format styles.</li>
+      <li>[[style]] is one of the String values <emu-val>"regular"</emu-val>, <emu-val>"duration"</emu-val>, <emu-val>"duration-short"</emu-val>, <emu-val>"duration-narrow"</emu-val> or <emu-val>"number"</emu-val>, identifying the list formatting style used.</li>
+    </ul>
+
+    <p>
+      Finally, objects that have been successfully initialized as a ListFormat have a [[boundResolve]] internal slot that caches the function returned by the select accessor (<emu-xref href="#sec-Intl.ListFormat.prototype.select"></emu-xref>).
+    
+    </p>
+  </emu-clause>
+</emu-clause>
+</emu-import>
+</body>

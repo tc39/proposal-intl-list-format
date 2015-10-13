@@ -1,0 +1,17 @@
+{
+  "name": "intl-list-format-spec",
+  "version": "1.0.0-pre-draft",
+  "description": "Intl.ListFormat API Specification [Draft]",
+  "scripts": {
+    "build": "ecmarkup spec/index.html index.html",
+    "watch": "ecmarkup --watch spec/index.html index.html"
+  },
+  "private": true,
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/caridy/intl-list-format-spec.git"
+  },
+  "devDependencies": {
+    "ecmarkup": "latest"
+  }
+}
