@@ -10,8 +10,9 @@ Implementation Progress
 
 Backpointers
 
-* https://github.com/tc39/ecma402/issues/34
-* https://groups.google.com/forum/#!topic/javascript-globalization/3nFDf5al5hU
+* https://github.com/tc39/ecma402/issues/33
+* http://cldr.unicode.org/translation/lists
+* http://unicode.org/reports/tr35/tr35-general.html#ListPatterns
 
 ### Authors
 
@@ -23,7 +24,7 @@ TBD
 
 ### Informative
 
-This proposal is based on the LDML spec, C.11 Language Plural Rules:
+This proposal is based on the LDML spec, List Patterns:
 
 
 ### Prior Art
