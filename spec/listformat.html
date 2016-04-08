@@ -20,14 +20,17 @@
         1. Else
           1. Let _options_ be ToObject(_options_).
         1. Let _opt_ be a new Record.
-        1. Let _t_ be GetOption(_options_, *"type"*, *"string"*, «*"regular"*, *"duration"*, *"number"*, *"unit"*, *"regular"*).
+        1. Let _t_ be GetOption(_options_, *"type"*, *"string"*, «*"regular"*, *"unit"*», *"regular"*).
         1. Set _listFormat_.[[type]] to _t_.
-        1. Let _s_ be GetOption(_options_, *"style"*, *"string"*, «*"long"*, *"short"*, *"narrow"*, *"regular"*).
+        1. Let _s_ be GetOption(_options_, *"style"*, *"string"*, «*"long"*, *"short"*, *"narrow"*, *"long"*).
         1. Set _listFormat_.[[style]] to _s_.
         1. Let _localeData_ be *%ListFormat%*.[[localeData]].
         1. Let _r_ be ResolveLocale(*%ListFormat%*.[[availableLocales]], _requestedLocales_, _opt_, *%ListFormat%*.[[relevantExtensionKeys]], _localeData_).
+        1. Let _dataLocale_ be _r_.[[dataLocale]].
+        1. Let _dataLocaleData_ be Get(_localeData_, _dataLocale_).
+        1. Let _templates_ be Get(_dataLocaleData_, _t_).
+        1. Set _listFormat_.[[templates]] to be the value of Get(_templates_, _s_).
         1. Set _listFormat_.[[locale]] to the value of _r_.[[locale]].
-        1. Set _listFormat_.[[boundFormat]] to *undefined*.
         1. Set _listFormat_.[[initializedListFormat]] to *true*.
         1. Return _listFormat_.
       </emu-alg>
@@ -59,13 +62,13 @@
       </p>
       <emu-alg>
         1. Set _parts_ to be the result of _pattern_.split(//).
-        1. Set _result_ to be an empty Array.
+        1. Let _result_ be ArrayCreate(0).
 
-        1. Set _i_ to *0*.
-        1. While _i_ is smaller _parts_.length, do
+        1. Set _i_ to be *0*.
+        1. Repeat, while _i_ &lt; _parts_.length
           1. Set _part_ to be _parts_.[_i_].
           1. If _i_ % 2 is *0*, then
-            1. If _part_.length is greater than *0*, then
+            1. If _part_.length is &gt; *0*, then
               1. _result_.push({type: 'literal', value: part}).
           1. Else,
             1. Set _subst_ to _placeables_.[_part_].
@@ -87,35 +90,32 @@
       </p>
 
       <emu-alg>
-        1. If _list_ is not an Array, then
-          1. Let _result_ be a new empty List.
-          1. Return _result_.
-        1. Let _length_ be list.length
-        1. If _length_ is *0*, then
-          1. Let _result_ be a new empty List.
-          1. Return _result_.
-        1. If _length_ is *1*, then
+        1. If Type(_list_) is not an Array, then
+          1. Return a new empty List.
+        1. Let _len_ be ? ToLength(? Get(_list_, *"length"*)).
+        1. If _len_ is *0*, then
+          1. Return a new empty List.
+        1. If _len_ is *1*, then
           1. Let _result_ be a new empty List.
           1. Add new part record { [[type]]: *"element"*, [[value]]: _list_.[0] } as a new element of the list _result_.
           1. Return _result_.
-        1. If _length_ is *2*, then
+        1. If _len_ is *2*, then
           1. Let _pattern_ be _listFormat_.[[templates]][2].
-          1. Set _value_ to be an new Object.
-          1. Set _value_.["0"] to be {type: 'element', value: list[0].
-          1. Set _value_.["1"] to be {type: 'element', value: list[1].
-          1. Let _result_ be the result of DeconstructPattern(_pattern_, _value_).
-          1. Return _result_.
-        1. Set _parts_ to {type: 'element', value: _list_.[_length_ - 1]}.
-        1. Set _i_ to _length_ - 2.
-        1. While _i_ greater than -1, do
-          1. If _i_ equals _length_ - 2, then
-            1. Set _template_ to _listFormat_.[[templates]][end].
+          1. Let _value_ be ObjectCreate(*%ObjectPrototype%*).
+          1. Set _value_.["0"] to be new Object { "type": "element", "value": _list_.[0] }.
+          1. Set _value_.["1"] to be new Object { "type": "element", "value": _list_.[1] }.
+          1. Return DeconstructPattern(_pattern_, _value_).
+        1. Set _parts_ to be a new Object { "type": "element", "value": _list_.[_len_ - 1] }.
+        1. Set _i_ to _len_ - *2*.
+        1. Repeat, while _i_ &gt; -1
+          1. If _i_ = _len_ - *2*, then
+            1. Set _template_ to _listFormat_.[[templates]][*"end"*].
           1. Else, if _i_ equals *0*, then
-            1. Set _template_ to _listFormat_.[[templates]][start].
+            1. Set _template_ to _listFormat_.[[templates]][*"start"*].
           1. Else,
-            1. Set _template_ to _listFormat_.[[templates]][middle].
-          1. Set _value_ to be a new Object.
-          1. Set _value_.["0"] to be {type: "element", value: _list_.[i]}.
+            1. Set _template_ to _listFormat_.[[templates]][*"middle"*].
+          1. Let _value_ be ObjectCreate(*%ObjectPrototype%*).
+          1. Set _value_.["0"] to be new Object { "type": "element", "value": _list_.[_i_] }.
           1. Set _value_.["1"] to be _parts_.
           1. Set _parts_ to be the result of DeconstructPattern(_template_, _value_).
           1. i--.
@@ -226,11 +226,11 @@
       <h1>Internal slots</h1>
 
       <p>
-        The value of the [[availableLocales]] internal slot is implementation defined within the constraints described in <emu-xref href="#sec-internal-slots"></emu-xref>.
+        The value of the [[relevantExtensionKeys]] internal slot is [].
       </p>
 
       <p>
-        The value of the [[relevantExtensionKeys]] internal slot is *[???]*.
+        The value of the [[availableLocales]] internal slot is implementation defined within the constraints described in <emu-xref href="#sec-internal-slots"></emu-xref>.
       </p>
 
       <p>
@@ -238,7 +238,7 @@
       </p>
 
       <ul>
-        <li>[[localeData]][locale] must have a listFormat property for all locale values. The value of this property must be an object, which must have properties with the names of the five list formatting styles: *"regular"*, *"duration"*, *"duration-short"*, *"duration-narrow*", *"unit"* and *"number"*. Properties *"regular"*, *"duration"*, *"duration-short"* and *"duration-narrow*" must be objects themselves, and each must have properties with names of the templates: *"2"*, *"start"*, *"middle"* and *"end*. Each of those properties must be a template string as specified in LDML List Format Rules. Properties *"unit"* and *"number"* must have a string value with a corresponding template string as specified in LDML List Format Rules.</li>
+        <li>[[localeData]][locale] must have a formats property for all locale values. The value of this property must be an object, which must have properties with the names of the two list formatting types: *"regular"* and *"unit"*. Each object must have properties with the names of three formatting styles: *"long"*, *"short"* and *"narrow"*. Each of those properties must be objects themselves, and each must have properties with names of templates: *"2"*, *"start"*, *"middle"* and *"end*. Each of those properties must be a template string as specified in LDML List Format Rules.</li>
       </ul>
 
       <emu-note>
@@ -285,7 +285,7 @@
 
       <emu-alg>
         1. Let _lf_ be *this* value.
-        1. Assert: Type(_lf_) is Object and _dtf_ has an [[initializedDateTimeFormat]] internal slot whose value is *true*.
+        1. Assert: Type(_lf_) is Object and _lf_ has an [[initializedListFormat]] internal slot whose value is *true*.
         1. If _list_ is not provided or is *undefined*, then
           1. Let _x_ be *%NewArray%*().
         1. Else,
@@ -303,7 +303,7 @@
 
       <emu-alg>
         1. Let _lf_ be *this* value.
-        1. Assert: Type(_lf_) is Object and _dtf_ has an [[initializedDateTimeFormat]] internal slot whose value is *true*.
+        1. Assert: Type(_lf_) is Object and _lf_ has an [[initializedListFormat]] internal slot whose value is *true*.
         1. If _list_ is not provided or is *undefined*, then
           1. Let _x_ be *%NewArray%*().
         1. Else,
