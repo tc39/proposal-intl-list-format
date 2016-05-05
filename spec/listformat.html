@@ -61,9 +61,8 @@
         </pre>
       </p>
       <emu-alg>
-        1. Set _parts_ to be the result of _pattern_.split(//).
+        1. Set _parts_ to be the result of _pattern_.split(/\{([^\}]+)\}/).
         1. Let _result_ be ArrayCreate(0).
-
         1. Set _i_ to be *0*.
         1. Repeat, while _i_ &lt; _parts_.length
           1. Set _part_ to be _parts_.[_i_].
