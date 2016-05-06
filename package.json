@@ -1,5 +1,5 @@
 {
-  "name": "intl-list-format-spec",
+  "name": "proposal-intl-list-format",
   "version": "1.0.0-pre-draft",
   "description": "Intl.ListFormat API Specification [Draft]",
   "scripts": {
@@ -9,7 +9,7 @@
   "private": true,
   "repository": {
     "type": "git",
-    "url": "https://github.com/caridy/intl-list-format-spec.git"
+    "url": "https://github.com/zbraniecki/proposal-intl-list-format.git"
   },
   "devDependencies": {
     "ecmarkup": "latest"

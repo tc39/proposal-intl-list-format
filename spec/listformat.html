@@ -8,7 +8,7 @@
       <h1>InitializeListFormat (listFormat, locales, options)</h1>
 
       <p>
-        The abstract operation InitializeListFormat accepts the arguments _listFormat_ (which must be an object), _locales_, and _options_. It initializes _listFormat_ as a ListFormat object. It performs the following steps:
+        The abstract operation InitializeListFormat accepts the arguments _listFormat_ (which must be an Object), _locales_, and _options_. It initializes _listFormat_ as a ListFormat object. It performs the following steps:
       </p>
 
       <emu-alg>
@@ -41,7 +41,7 @@
       <h1>DeconstructPattern (pattern, placeables)</h1>
 
       <p>
-        The *DeconstructPattern* abstract operation is called with arguments _pattern_ (which must be a String) and _placeables_ (which must be an Object), and deconstructts the pattern string into a list of parts.
+        The *DeconstructPattern* abstract operation is called with arguments _pattern_ (which must be a String) and _placeables_ (which must be a Record), and deconstructts the pattern string into a list of parts.
         Example:
         <pre>
         Input:
@@ -50,7 +50,7 @@
             yy: {type: 'minute', value: '06'}
           });
 
-        Output:
+        Output (List of Records):
           [
             {type: 'literal', value: 'AA'},
             {type: 'hour', value: '15'},
@@ -62,21 +62,24 @@
       </p>
       <emu-alg>
         1. Set _parts_ to be the result of _pattern_.split(/\{([^\}]+)\}/).
-        1. Let _result_ be ArrayCreate(0).
+        1. Let _result_ be a new empty List.
         1. Set _i_ to be *0*.
         1. Repeat, while _i_ &lt; _parts_.length
           1. Set _part_ to be _parts_.[_i_].
           1. If _i_ % 2 is *0*, then
             1. If _part_.length is &gt; *0*, then
-              1. _result_.push({type: 'literal', value: part}).
+              1. Add new part record { [[type]]: *"literal"*, [[value]]: _part_ } as a new element on the list _result_.
           1. Else,
-            1. Set _subst_ to _placeables_.[_part_].
+            1. Set _subst_ to _placeables_.[[_part_]].
             1. If !subst, then
               1. Throw new Error.
-            1. If Array.isArray(_subst_), then
-              1. result.push(...subst).
+            1. If Type(_subst_) is List, then 
+              1. Let _len_ be ? ToLength(? Get(_subst_, *"length"*)).
+              1. Set _i_ to *0*.
+              1. Repeat, while _i_ &lt; 0
+                1. Add _subst_.[_i_] as a new element on the list _result_.
             1. Else,
-              1. result.push(_subst_).
+              1. Add _subst_ as a new element on the list _result_.
         1. Return _result_.
       </emu-alg>
     </emu-clause>
@@ -85,12 +88,11 @@
       <h1>CreatePartsFromList (listFormat, list)</h1>
 
       <p>
-        The *CreatePartsFromList* abstract operation is called with arguments _listFormat_ (which must be an object initialized as a ListFormat) and _list_ (which must be an Array), and creates the corresponding parts according to the effective locale and the formatting options of _listFormat_. The following steps are taken:
+        The *CreatePartsFromList* abstract operation is called with arguments
+        _listFormat_ (which must be an object initialized as a ListFormat) and _list_ (which must be a List), and creates the corresponding parts according to the effective locale and the formatting options of _listFormat_. The following steps are taken:
       </p>
 
       <emu-alg>
-        1. If Type(_list_) is not an Array, then
-          1. Return a new empty List.
         1. Let _len_ be ? ToLength(? Get(_list_, *"length"*)).
         1. If _len_ is *0*, then
           1. Return a new empty List.
@@ -100,11 +102,11 @@
           1. Return _result_.
         1. If _len_ is *2*, then
           1. Let _pattern_ be _listFormat_.[[templates]][2].
-          1. Let _value_ be ObjectCreate(*%ObjectPrototype%*).
-          1. Set _value_.["0"] to be new Object { "type": "element", "value": _list_.[0] }.
-          1. Set _value_.["1"] to be new Object { "type": "element", "value": _list_.[1] }.
+          1. Let _value_ be a new Record.
+          1. Set _value_.["0"] to be new record { [[type]]: "element", [[value]]: _list_.[0] }.
+          1. Set _value_.["1"] to be new record { [[type]]: "element", [[value]]: _list_.[1] }.
           1. Return DeconstructPattern(_pattern_, _value_).
-        1. Set _parts_ to be a new Object { "type": "element", "value": _list_.[_len_ - 1] }.
+        1. Set _parts_ to be a new Record { [[type]]: "element", [[value]]: _list_.[_len_ - 1] }.
         1. Set _i_ to _len_ - *2*.
         1. Repeat, while _i_ &gt; -1
           1. If _i_ = _len_ - *2*, then
@@ -113,8 +115,8 @@
             1. Set _template_ to _listFormat_.[[templates]][*"start"*].
           1. Else,
             1. Set _template_ to _listFormat_.[[templates]][*"middle"*].
-          1. Let _value_ be ObjectCreate(*%ObjectPrototype%*).
-          1. Set _value_.["0"] to be new Object { "type": "element", "value": _list_.[_i_] }.
+          1. Let _value_ be a new Record.
+          1. Set _value_.["0"] to be new Record { [[type]]: "element", [[value]]: _list_.[_i_] }.
           1. Set _value_.["1"] to be _parts_.
           1. Set _parts_ to be the result of DeconstructPattern(_template_, _value_).
           1. i--.
@@ -225,10 +227,6 @@
       <h1>Internal slots</h1>
 
       <p>
-        The value of the [[relevantExtensionKeys]] internal slot is [].
-      </p>
-
-      <p>
         The value of the [[availableLocales]] internal slot is implementation defined within the constraints described in <emu-xref href="#sec-internal-slots"></emu-xref>.
       </p>
 
@@ -237,7 +235,7 @@
       </p>
 
       <ul>
-        <li>[[localeData]][locale] must have a formats property for all locale values. The value of this property must be an object, which must have properties with the names of the two list formatting types: *"regular"* and *"unit"*. Each object must have properties with the names of three formatting styles: *"long"*, *"short"* and *"narrow"*. Each of those properties must be objects themselves, and each must have properties with names of templates: *"2"*, *"start"*, *"middle"* and *"end*. Each of those properties must be a template string as specified in LDML List Format Rules.</li>
+        <li>[[localeData]][locale] must have a formats property for all locale values. The value of this property must be an object, which must have properties with the names of the two list formatting types: *"regular"* and *"unit"*. Each object must have properties with the names of three formatting styles: *"long"*, *"short"* and *"narrow"*. Each of those properties must be objects themselves, and each must have properties with names: *"2"*, *"start"*, *"middle"* and *"end"*. Each of those properties must be a template string as specified in LDML List Format Rules.</li>
       </ul>
 
       <emu-note>
@@ -284,11 +282,11 @@
 
       <emu-alg>
         1. Let _lf_ be *this* value.
-        1. Assert: Type(_lf_) is Object and _lf_ has an [[initializedListFormat]] internal slot whose value is *true*.
+        1. If Type(_lf_) is not Object, throw a *TypeError* exception.
+        1. If _lf_ does not have an [[initializedListFormat]] internal slot, throw a *TypeError* exception.
         1. If _list_ is not provided or is *undefined*, then
-          1. Let _x_ be *%NewArray%*().
-        1. Else,
-          1. Let _x_ be ? ToArray(_list_).
+          1. Return an empty String.
+        1. Let _x_ be ? ToArray(_list_).
         1. Return ? FormatList(_lf_, _x_).
       </emu-alg>
     </emu-clause>
@@ -302,11 +300,11 @@
 
       <emu-alg>
         1. Let _lf_ be *this* value.
-        1. Assert: Type(_lf_) is Object and _lf_ has an [[initializedListFormat]] internal slot whose value is *true*.
+        1. If Type(_lf_) is not Object, throw a *TypeError* exception.
+        1. If _lf_ does not have an [[initializedListFormat]] internal slot, throw a *TypeError* exception.
         1. If _list_ is not provided or is *undefined*, then
-          1. Let _x_ be *%NewArray%*().
-        1. Else,
-          1. Let _x_ be ? ToArray(_list_).
+          1. Return an empty String.
+        1. Let _x_ be ? ToArray(_list_).
         1. Return ? FormatListToParts(_lf_, _x_).
       </emu-alg>
     </emu-clause>
@@ -318,7 +316,7 @@
         This function provides access to the locale and options computed during initialization of the object.
       </p>
       <p>
-        The function returns a new object whose properties and attributes are set as if constructed by an object literal assigning to each of the following properties the value of the corresponding internal slot of this ListFormat object (see <emu-xref href="#sec-properties-of-intl-listformat-instances"></emu-xref>): locale and style. Properties whose corresponding internal slots are not present are not assigned.
+        The function returns a new object whose properties and attributes are set as if constructed by an object literal assigning to each of the following properties the value of the corresponding internal slot of this ListFormat object (see <emu-xref href="#sec-properties-of-intl-listformat-instances"></emu-xref>): locale, type and style. Properties whose corresponding internal slots are not present are not assigned.
       </p>
     </emu-clause>
   </emu-clause>
@@ -340,11 +338,8 @@
 
     <ul>
       <li>[[locale]] is a String value with the language tag of the locale whose localization is used by the list format styles.</li>
-      <li>[[style]] is one of the String values *"regular"*, *"duration"*, *"duration-short"*, *"duration-narrow"*, *"unit"* or *"number"*, identifying the list formatting style used.</li>
+      <li>[[type]] is one of the String values *"regular"*, or *"unit"*, identifying the list of types used.</li>
+      <li>[[style]] is one of the String values *"long"*, *"short"*, or *"narrow"*, identifying the list formatting style used.</li>
     </ul>
-
-    <p>
-      Finally, objects that have been successfully initialized as a ListFormat have a [[boundResolve]] internal slot that caches the function returned by the format accessor (<emu-xref href="#sec-Intl.ListFormat.prototype.format"></emu-xref>).
-    </p>
   </emu-clause>
 </emu-clause>
