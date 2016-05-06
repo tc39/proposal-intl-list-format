@@ -15,7 +15,7 @@
       <h1><span class="secnum">1.1.1</span>InitializeListFormat (listFormat, locales, options)<span class="utils"><span class="anchor"><a href="#sec-InitializeListFormat">#</a></span></span></h1>
 
       <p>
-        The abstract operation InitializeListFormat accepts the arguments <var>listFormat</var> (which must be an object), <var>locales</var>, and <var>options</var>. It initializes <var>listFormat</var> as a ListFormat object. It performs the following steps:
+        The abstract operation InitializeListFormat accepts the arguments <var>listFormat</var> (which must be an Object), <var>locales</var>, and <var>options</var>. It initializes <var>listFormat</var> as a ListFormat object. It performs the following steps:
       
       </p>
 
@@ -28,7 +28,7 @@
       <h1><span class="secnum">1.1.2</span>DeconstructPattern (pattern, placeables)<span class="utils"><span class="anchor"><a href="#sec-deconstructpattern">#</a></span></span></h1>
 
       <p>
-        The <emu-val>DeconstructPattern</emu-val> abstract operation is called with arguments <var>pattern</var> (which must be a String) and <var>placeables</var> (which must be an Object), and deconstructts the pattern string into a list of parts.
+        The <emu-val>DeconstructPattern</emu-val> abstract operation is called with arguments <var>pattern</var> (which must be a String) and <var>placeables</var> (which must be a <emu-xref href="#sec-list-and-record-specification-type"><a href="https://tc39.github.io/ecma262/#sec-list-and-record-specification-type">Record</a></emu-xref>), and deconstructts the pattern string into a list of parts.
         Example:
         
         </p><pre>        Input:
@@ -37,7 +37,7 @@
             yy: {type: 'minute', value: '06'}
           });
 
-        Output:
+        Output (List of Records):
           [
             {type: 'literal', value: 'AA'},
             {type: 'hour', value: '15'},
@@ -47,7 +47,7 @@
           ]
         </pre>
       <p></p>
-      <emu-alg><ol><li>Set <var>parts</var> to be the result of <var>pattern</var>.split(/\{([^\}]+)\}/).</li><li>Let <var>result</var> be <emu-xref aoid="ArrayCreate"><a href="https://tc39.github.io/ecma262/#sec-arraycreate">ArrayCreate</a></emu-xref>(0).</li><li>Set <var>i</var> to be <emu-val>0</emu-val>.</li><li>Repeat, while <var>i</var> &lt; <var>parts</var>.length<ol><li>Set <var>part</var> to be <var>parts</var>.[<var>i</var>].</li><li>If <var>i</var> % 2 is <emu-val>0</emu-val>, then<ol><li>If <var>part</var>.length is &gt; <emu-val>0</emu-val>, then<ol><li><var>result</var>.push({type: 'literal', value: part}).</li></ol></li></ol></li><li>Else,<ol><li>Set <var>subst</var> to <var>placeables</var>.[<var>part</var>].</li><li>If !subst, then<ol><li>Throw new Error.</li></ol></li><li>If Array.isArray(<var>subst</var>), then<ol><li>result.push(...subst).</li></ol></li><li>Else,<ol><li>result.push(<var>subst</var>).</li></ol></li></ol></li></ol></li><li>Return <var>result</var>.
+      <emu-alg><ol><li>Set <var>parts</var> to be the result of <var>pattern</var>.split(/\{([^\}]+)\}/).</li><li>Let <var>result</var> be a new empty <emu-xref href="#sec-list-and-record-specification-type"><a href="https://tc39.github.io/ecma262/#sec-list-and-record-specification-type">List</a></emu-xref>.</li><li>Set <var>i</var> to be <emu-val>0</emu-val>.</li><li>Repeat, while <var>i</var> &lt; <var>parts</var>.length<ol><li>Set <var>part</var> to be <var>parts</var>.[<var>i</var>].</li><li>If <var>i</var> % 2 is <emu-val>0</emu-val>, then<ol><li>If <var>part</var>.length is &gt; <emu-val>0</emu-val>, then<ol><li>Add new part record { [[type]]: <emu-val>"literal"</emu-val>, [[value]]: <var>part</var> } as a new element on the list <var>result</var>.</li></ol></li></ol></li><li>Else,<ol><li>Set <var>subst</var> to <var>placeables</var>.[[<var>part</var>]].</li><li>If !subst, then<ol><li>Throw new Error.</li></ol></li><li>If <emu-xref aoid="Type"><a href="https://tc39.github.io/ecma262/#sec-ecmascript-data-types-and-values">Type</a></emu-xref>(<var>subst</var>) is <emu-xref href="#sec-list-and-record-specification-type"><a href="https://tc39.github.io/ecma262/#sec-list-and-record-specification-type">List</a></emu-xref>, then <ol><li>Let <var>len</var> be ? <emu-xref aoid="ToLength"><a href="https://tc39.github.io/ecma262/#sec-tolength">ToLength</a></emu-xref>(? <emu-xref aoid="Get"><a href="https://tc39.github.io/ecma262/#sec-get-o-p">Get</a></emu-xref>(<var>subst</var>, <emu-val>"length"</emu-val>)).</li><li>Set <var>i</var> to <emu-val>0</emu-val>.</li><li>Repeat, while <var>i</var> &lt; 0<ol><li>Add <var>subst</var>.[<var>i</var>] as a new element on the list <var>result</var>.</li></ol></li></ol></li><li>Else,<ol><li>Add <var>subst</var> as a new element on the list <var>result</var>.</li></ol></li></ol></li></ol></li><li>Return <var>result</var>.
       </li></ol></emu-alg>
     </emu-clause>
 
@@ -55,11 +55,12 @@
       <h1><span class="secnum">1.1.3</span>CreatePartsFromList (listFormat, list)<span class="utils"><span class="anchor"><a href="#sec-createpartsfromlist">#</a></span></span></h1>
 
       <p>
-        The <emu-val>CreatePartsFromList</emu-val> abstract operation is called with arguments <var>listFormat</var> (which must be an object initialized as a ListFormat) and <var>list</var> (which must be an Array), and creates the corresponding parts according to the effective locale and the formatting options of <var>listFormat</var>. The following steps are taken:
+        The <emu-val>CreatePartsFromList</emu-val> abstract operation is called with arguments
+        <var>listFormat</var> (which must be an object initialized as a ListFormat) and <var>list</var> (which must be a <emu-xref href="#sec-list-and-record-specification-type"><a href="https://tc39.github.io/ecma262/#sec-list-and-record-specification-type">List</a></emu-xref>), and creates the corresponding parts according to the effective locale and the formatting options of <var>listFormat</var>. The following steps are taken:
       
       </p>
 
-      <emu-alg><ol><li>If <emu-xref aoid="Type"><a href="https://tc39.github.io/ecma262/#sec-ecmascript-data-types-and-values">Type</a></emu-xref>(<var>list</var>) is not an Array, then<ol><li>Return a new empty <emu-xref href="#sec-list-and-record-specification-type"><a href="https://tc39.github.io/ecma262/#sec-list-and-record-specification-type">List</a></emu-xref>.</li></ol></li><li>Let <var>len</var> be ? <emu-xref aoid="ToLength"><a href="https://tc39.github.io/ecma262/#sec-tolength">ToLength</a></emu-xref>(? <emu-xref aoid="Get"><a href="https://tc39.github.io/ecma262/#sec-get-o-p">Get</a></emu-xref>(<var>list</var>, <emu-val>"length"</emu-val>)).</li><li>If <var>len</var> is <emu-val>0</emu-val>, then<ol><li>Return a new empty <emu-xref href="#sec-list-and-record-specification-type"><a href="https://tc39.github.io/ecma262/#sec-list-and-record-specification-type">List</a></emu-xref>.</li></ol></li><li>If <var>len</var> is <emu-val>1</emu-val>, then<ol><li>Let <var>result</var> be a new empty <emu-xref href="#sec-list-and-record-specification-type"><a href="https://tc39.github.io/ecma262/#sec-list-and-record-specification-type">List</a></emu-xref>.</li><li>Add new part record { [[type]]: <emu-val>"element"</emu-val>, [[value]]: <var>list</var>.[0] } as a new element of the list <var>result</var>.</li><li>Return <var>result</var>.</li></ol></li><li>If <var>len</var> is <emu-val>2</emu-val>, then<ol><li>Let <var>pattern</var> be <var>listFormat</var>.[[templates]][2].</li><li>Let <var>value</var> be <emu-xref aoid="ObjectCreate"><a href="https://tc39.github.io/ecma262/#sec-objectcreate">ObjectCreate</a></emu-xref>(<emu-val>%ObjectPrototype%</emu-val>).</li><li>Set <var>value</var>.["0"] to be new Object { "type": "element", "value": <var>list</var>.[0] }.</li><li>Set <var>value</var>.["1"] to be new Object { "type": "element", "value": <var>list</var>.[1] }.</li><li>Return <emu-xref aoid="DeconstructPattern"><a href="#sec-deconstructpattern">DeconstructPattern</a></emu-xref>(<var>pattern</var>, <var>value</var>).</li></ol></li><li>Set <var>parts</var> to be a new Object { "type": "element", "value": <var>list</var>.[<var>len</var> - 1] }.</li><li>Set <var>i</var> to <var>len</var> - <emu-val>2</emu-val>.</li><li>Repeat, while <var>i</var> &gt; -1<ol><li>If <var>i</var> = <var>len</var> - <emu-val>2</emu-val>, then<ol><li>Set <var>template</var> to <var>listFormat</var>.[[templates]][<emu-val>"end"</emu-val>].</li></ol></li><li>Else, if <var>i</var> equals <emu-val>0</emu-val>, then<ol><li>Set <var>template</var> to <var>listFormat</var>.[[templates]][<emu-val>"start"</emu-val>].</li></ol></li><li>Else,<ol><li>Set <var>template</var> to <var>listFormat</var>.[[templates]][<emu-val>"middle"</emu-val>].</li></ol></li><li>Let <var>value</var> be <emu-xref aoid="ObjectCreate"><a href="https://tc39.github.io/ecma262/#sec-objectcreate">ObjectCreate</a></emu-xref>(<emu-val>%ObjectPrototype%</emu-val>).</li><li>Set <var>value</var>.["0"] to be new Object { "type": "element", "value": <var>list</var>.[<var>i</var>] }.</li><li>Set <var>value</var>.["1"] to be <var>parts</var>.</li><li>Set <var>parts</var> to be the result of <emu-xref aoid="DeconstructPattern"><a href="#sec-deconstructpattern">DeconstructPattern</a></emu-xref>(<var>template</var>, <var>value</var>).</li><li>i--.</li></ol></li><li>Return <var>parts</var>.
+      <emu-alg><ol><li>Let <var>len</var> be ? <emu-xref aoid="ToLength"><a href="https://tc39.github.io/ecma262/#sec-tolength">ToLength</a></emu-xref>(? <emu-xref aoid="Get"><a href="https://tc39.github.io/ecma262/#sec-get-o-p">Get</a></emu-xref>(<var>list</var>, <emu-val>"length"</emu-val>)).</li><li>If <var>len</var> is <emu-val>0</emu-val>, then<ol><li>Return a new empty <emu-xref href="#sec-list-and-record-specification-type"><a href="https://tc39.github.io/ecma262/#sec-list-and-record-specification-type">List</a></emu-xref>.</li></ol></li><li>If <var>len</var> is <emu-val>1</emu-val>, then<ol><li>Let <var>result</var> be a new empty <emu-xref href="#sec-list-and-record-specification-type"><a href="https://tc39.github.io/ecma262/#sec-list-and-record-specification-type">List</a></emu-xref>.</li><li>Add new part record { [[type]]: <emu-val>"element"</emu-val>, [[value]]: <var>list</var>.[0] } as a new element of the list <var>result</var>.</li><li>Return <var>result</var>.</li></ol></li><li>If <var>len</var> is <emu-val>2</emu-val>, then<ol><li>Let <var>pattern</var> be <var>listFormat</var>.[[templates]][2].</li><li>Let <var>value</var> be a new <emu-xref href="#sec-list-and-record-specification-type"><a href="https://tc39.github.io/ecma262/#sec-list-and-record-specification-type">Record</a></emu-xref>.</li><li>Set <var>value</var>.["0"] to be new record { [[type]]: "element", [[value]]: <var>list</var>.[0] }.</li><li>Set <var>value</var>.["1"] to be new record { [[type]]: "element", [[value]]: <var>list</var>.[1] }.</li><li>Return <emu-xref aoid="DeconstructPattern"><a href="#sec-deconstructpattern">DeconstructPattern</a></emu-xref>(<var>pattern</var>, <var>value</var>).</li></ol></li><li>Set <var>parts</var> to be a new <emu-xref href="#sec-list-and-record-specification-type"><a href="https://tc39.github.io/ecma262/#sec-list-and-record-specification-type">Record</a></emu-xref> { [[type]]: "element", [[value]]: <var>list</var>.[<var>len</var> - 1] }.</li><li>Set <var>i</var> to <var>len</var> - <emu-val>2</emu-val>.</li><li>Repeat, while <var>i</var> &gt; -1<ol><li>If <var>i</var> = <var>len</var> - <emu-val>2</emu-val>, then<ol><li>Set <var>template</var> to <var>listFormat</var>.[[templates]][<emu-val>"end"</emu-val>].</li></ol></li><li>Else, if <var>i</var> equals <emu-val>0</emu-val>, then<ol><li>Set <var>template</var> to <var>listFormat</var>.[[templates]][<emu-val>"start"</emu-val>].</li></ol></li><li>Else,<ol><li>Set <var>template</var> to <var>listFormat</var>.[[templates]][<emu-val>"middle"</emu-val>].</li></ol></li><li>Let <var>value</var> be a new <emu-xref href="#sec-list-and-record-specification-type"><a href="https://tc39.github.io/ecma262/#sec-list-and-record-specification-type">Record</a></emu-xref>.</li><li>Set <var>value</var>.["0"] to be new <emu-xref href="#sec-list-and-record-specification-type"><a href="https://tc39.github.io/ecma262/#sec-list-and-record-specification-type">Record</a></emu-xref> { [[type]]: "element", [[value]]: <var>list</var>.[<var>i</var>] }.</li><li>Set <var>value</var>.["1"] to be <var>parts</var>.</li><li>Set <var>parts</var> to be the result of <emu-xref aoid="DeconstructPattern"><a href="#sec-deconstructpattern">DeconstructPattern</a></emu-xref>(<var>template</var>, <var>value</var>).</li><li>i--.</li></ol></li><li>Return <var>parts</var>.
       </li></ol></emu-alg>
     </emu-clause>
 
@@ -154,11 +155,6 @@
       <h1><span class="secnum">1.3.3</span>Internal slots<span class="utils"><span class="anchor"><a href="#sec-Intl.ListFormat-internal-slots">#</a></span></span></h1>
 
       <p>
-        The value of the [[relevantExtensionKeys]] internal slot is [].
-      
-      </p>
-
-      <p>
         The value of the [[availableLocales]] internal slot is implementation defined within the constraints described in  <emu-xref href="#sec-internal-slots"></emu-xref>.
       
       </p>
@@ -169,7 +165,7 @@
       </p>
 
       <ul>
-        <li>[[localeData]][locale] must have a formats property for all locale values. The value of this property must be an object, which must have properties with the names of the two list formatting types: <emu-val>"regular"</emu-val> and <emu-val>"unit"</emu-val>. Each object must have properties with the names of three formatting styles: <emu-val>"long"</emu-val>, <emu-val>"short"</emu-val> and <emu-val>"narrow"</emu-val>. Each of those properties must be objects themselves, and each must have properties with names of templates: <emu-val>"2"</emu-val>, <emu-val>"start"</emu-val>, <emu-val>"middle"</emu-val> and <emu-val>"end</emu-val>. Each of those properties must be a template string as specified in LDML <emu-xref href="#sec-list-and-record-specification-type"><a href="https://tc39.github.io/ecma262/#sec-list-and-record-specification-type">List</a></emu-xref> Format Rules.</li>
+        <li>[[localeData]][locale] must have a formats property for all locale values. The value of this property must be an object, which must have properties with the names of the two list formatting types: <emu-val>"regular"</emu-val> and <emu-val>"unit"</emu-val>. Each object must have properties with the names of three formatting styles: <emu-val>"long"</emu-val>, <emu-val>"short"</emu-val> and <emu-val>"narrow"</emu-val>. Each of those properties must be objects themselves, and each must have properties with names: <emu-val>"2"</emu-val>, <emu-val>"start"</emu-val>, <emu-val>"middle"</emu-val> and <emu-val>"end"</emu-val>. Each of those properties must be a template string as specified in LDML <emu-xref href="#sec-list-and-record-specification-type"><a href="https://tc39.github.io/ecma262/#sec-list-and-record-specification-type">List</a></emu-xref> Format Rules.</li>
       </ul>
 
       <emu-note><span class="note">Note</span>
@@ -221,7 +217,7 @@
       
       </p>
 
-      <emu-alg><ol><li>Let <var>lf</var> be <emu-val>this</emu-val> value.</li><li>Assert: <emu-xref aoid="Type"><a href="https://tc39.github.io/ecma262/#sec-ecmascript-data-types-and-values">Type</a></emu-xref>(<var>lf</var>) is Object and <var>lf</var> has an [[initializedListFormat]] internal slot whose value is <emu-val>true</emu-val>.</li><li>If <var>list</var> is not provided or is <emu-val>undefined</emu-val>, then<ol><li>Let <var>x</var> be <emu-val>%NewArray%</emu-val>().</li></ol></li><li>Else,<ol><li>Let <var>x</var> be ? ToArray(<var>list</var>).</li></ol></li><li>Return ? <emu-xref aoid="FormatList"><a href="#sec-formatlist">FormatList</a></emu-xref>(<var>lf</var>, <var>x</var>).
+      <emu-alg><ol><li>Let <var>lf</var> be <emu-val>this</emu-val> value.</li><li>If <emu-xref aoid="Type"><a href="https://tc39.github.io/ecma262/#sec-ecmascript-data-types-and-values">Type</a></emu-xref>(<var>lf</var>) is not Object, throw a <emu-val>TypeError</emu-val> exception.</li><li>If <var>lf</var> does not have an [[initializedListFormat]] internal slot, throw a <emu-val>TypeError</emu-val> exception.</li><li>If <var>list</var> is not provided or is <emu-val>undefined</emu-val>, then<ol><li>Return an empty String.</li></ol></li><li>Let <var>x</var> be ? ToArray(<var>list</var>).</li><li>Return ? <emu-xref aoid="FormatList"><a href="#sec-formatlist">FormatList</a></emu-xref>(<var>lf</var>, <var>x</var>).
       </li></ol></emu-alg>
     </emu-clause>
 
@@ -233,7 +229,7 @@
       
       </p>
 
-      <emu-alg><ol><li>Let <var>lf</var> be <emu-val>this</emu-val> value.</li><li>Assert: <emu-xref aoid="Type"><a href="https://tc39.github.io/ecma262/#sec-ecmascript-data-types-and-values">Type</a></emu-xref>(<var>lf</var>) is Object and <var>lf</var> has an [[initializedListFormat]] internal slot whose value is <emu-val>true</emu-val>.</li><li>If <var>list</var> is not provided or is <emu-val>undefined</emu-val>, then<ol><li>Let <var>x</var> be <emu-val>%NewArray%</emu-val>().</li></ol></li><li>Else,<ol><li>Let <var>x</var> be ? ToArray(<var>list</var>).</li></ol></li><li>Return ? <emu-xref aoid="FormatListToParts"><a href="#sec-formatlisttoparts">FormatListToParts</a></emu-xref>(<var>lf</var>, <var>x</var>).
+      <emu-alg><ol><li>Let <var>lf</var> be <emu-val>this</emu-val> value.</li><li>If <emu-xref aoid="Type"><a href="https://tc39.github.io/ecma262/#sec-ecmascript-data-types-and-values">Type</a></emu-xref>(<var>lf</var>) is not Object, throw a <emu-val>TypeError</emu-val> exception.</li><li>If <var>lf</var> does not have an [[initializedListFormat]] internal slot, throw a <emu-val>TypeError</emu-val> exception.</li><li>If <var>list</var> is not provided or is <emu-val>undefined</emu-val>, then<ol><li>Return an empty String.</li></ol></li><li>Let <var>x</var> be ? ToArray(<var>list</var>).</li><li>Return ? <emu-xref aoid="FormatListToParts"><a href="#sec-formatlisttoparts">FormatListToParts</a></emu-xref>(<var>lf</var>, <var>x</var>).
       </li></ol></emu-alg>
     </emu-clause>
 
@@ -245,7 +241,7 @@
       
       </p>
       <p>
-        The function returns a new object whose properties and attributes are set as if constructed by an object literal assigning to each of the following properties the value of the corresponding internal slot of this ListFormat object (see  <emu-xref href="#sec-properties-of-intl-listformat-instances"><a href="#sec-properties-of-intl-listformat-instances">1.5</a></emu-xref>): locale and style. Properties whose corresponding internal slots are not present are not assigned.
+        The function returns a new object whose properties and attributes are set as if constructed by an object literal assigning to each of the following properties the value of the corresponding internal slot of this ListFormat object (see  <emu-xref href="#sec-properties-of-intl-listformat-instances"><a href="#sec-properties-of-intl-listformat-instances">1.5</a></emu-xref>): locale, type and style. Properties whose corresponding internal slots are not present are not assigned.
       
       </p>
     </emu-clause>
@@ -271,7 +267,8 @@
 
     <ul>
       <li>[[locale]] is a String value with the language tag of the locale whose localization is used by the list format styles.</li>
-      <li>[[style]] is one of the String values <emu-val>"regular"</emu-val>, <emu-val>"duration"</emu-val>, <emu-val>"duration-short"</emu-val>, <emu-val>"duration-narrow"</emu-val>, <emu-val>"unit"</emu-val> or <emu-val>"number"</emu-val>, identifying the list formatting style used.</li>
+      <li>[[type]] is one of the String values <emu-val>"regular"</emu-val>, or <emu-val>"unit"</emu-val>, identifying the list of types used.</li>
+      <li>[[style]] is one of the String values <emu-val>"long"</emu-val>, <emu-val>"short"</emu-val>, or <emu-val>"narrow"</emu-val>, identifying the list formatting style used.</li>
     </ul>
   </emu-clause>
 </emu-clause><emu-annex id="sec-copyright-and-software-license">
