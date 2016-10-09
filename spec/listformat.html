@@ -25,7 +25,7 @@
         1. Let _s_ be GetOption(_options_, *"style"*, *"string"*, «*"long"*, *"short"*, *"narrow"*, *"long"*).
         1. Set _listFormat_.[[Style]] to _s_.
         1. Let _localeData_ be *%ListFormat%*.[[LocaleData]].
-        1. Let _r_ be ResolveLocale(*%ListFormat%*.[[AvailableLocales]], _requestedLocales_, _opt_, *%ListFormat%*.[[RelevantExtensionKeys]], _localeData_).
+        1. Let _r_ be ResolveLocale(*%ListFormat%*.[[AvailableLocales]], _requestedLocales_, _opt_, *undefined*, _localeData_).
         1. Let _dataLocale_ be _r_.[[DataLocale]].
         1. Let _dataLocaleData_ be Get(_localeData_, _dataLocale_).
         1. Let _templates_ be Get(_dataLocaleData_, _t_).
@@ -70,13 +70,13 @@
             1. If _part_.length is &gt; *0*, then
               1. Add new part record { [[Type]]: *"literal"*, [[Value]]: _part_ } as a new element on the list _result_.
           1. Else,
+            1. If ? HasOwnProperty(_placeables_, _part_), then
+              1. Throw a TypeError exception..
             1. Set _subst_ to _placeables_.[[_part_]].
-            1. If !subst, then
-              1. Throw new Error.
-            1. If Type(_subst_) is List, then 
+            1. If Type(_subst_) is a List, then
               1. Let _len_ be ? ToLength(? Get(_subst_, *"length"*)).
               1. Set _i_ to *0*.
-              1. Repeat, while _i_ &lt; 0
+              1. Repeat, while _i_ &lt; _len_
                 1. Add _subst_.[_i_] as a new element on the list _result_.
             1. Else,
               1. Add _subst_ as a new element on the list _result_.
@@ -303,7 +303,7 @@
         1. If Type(_lf_) is not Object, throw a *TypeError* exception.
         1. If _lf_ does not have an [[InitializedListFormat]] internal slot, throw a *TypeError* exception.
         1. If _list_ is not provided or is *undefined*, then
-          1. Return an empty String.
+          1. Return an empty Array.
         1. Let _x_ be ? ToArray(_list_).
         1. Return ? FormatListToParts(_lf_, _x_).
       </emu-alg>
