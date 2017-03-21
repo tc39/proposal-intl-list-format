@@ -20,7 +20,8 @@ Backpointers
 
 ### Reviewers
 
-TBD
+ * Jamund Ferguson (@xjamundx)
+ * Daniel Ehrenberg (@littledan)
 
 ### Informative
 
