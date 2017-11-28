@@ -100,27 +100,24 @@
       </p>
 
       <emu-alg>
-        1. Let _len_ be ? ToLength(? Get(_list_, *"length"*)).
+        1. Let _len_ be the length of _list_.
+        1. If _list_ contains any element _value_ such that Type(_value_) is not String, throw a *TypeError* exception.
         1. If _len_ is *0*, then
           1. Return a new empty List.
         1. If _len_ is *1*, then
           1. Let _result_ be a new empty List.
-          1. Let _value_ be Get(_list_, *0*).
-          1. If Type(_value_) is not String, throw a *TypeError* exception.
+          1. Let _value_ be _list_[0].
           1. Add new part record { [[Type]]: *"element"*, [[Value]]: _value_ } as a new element of the list _result_.
           1. Return _result_.
         1. If _len_ is *2*, then
           1. Let _pattern_ be _listFormat_.[[Template2]].
-          1. Let _listValue1_ be Get(_list_, *0*).
-          1. If Type(_listValue1_) is not String, throw a *TypeError* exception.
-          1. Let _listValue2_ be Get(_list_, *1*).
-          1. If Type(_listValue2_) is not String, throw a *TypeError* exception.
+          1. Let _listValue1_ be _list_[0].
+          1. Let _listValue2_ be _list_[1].
           1. Let _value_ be a new placeable record.
           1. Set _value_.["0"] to be new part record { [[Type]]: "element", [[Value]]: _listValue1_ }.
           1. Set _value_.["1"] to be new part record { [[Type]]: "element", [[Value]]: _listValue2_ }.
           1. Return DeconstructPattern(_pattern_, _value_).
-        1. Let _v_ be Get(_list_, _len_ - *1*).
-        1. If Type(_v_) is not String, throw a *TypeError* exception.
+        1. Let _v_ be _list_[_len_ - 1].
         1. Set _parts_ to be a new part record { [[Type]]: "element", [[Value]]: _v_ }.
         1. Set _i_ to _len_ - *2*.
         1. Repeat, while _i_ &gt; -1
@@ -131,7 +128,7 @@
           1. Else,
             1. Set _template_ to _listFormat_.[[TemplateMiddle]].
           1. Let _value_ be a new placeable record.
-          1. Set _v_ to Get(_list_, _i_).
+          1. Set _v_ to _list_[_i_].
           1. If Type(_v_) is not String, throw a *TypeError* exception.
           1. Set _value_.["0"] to be new part record { [[Type]]: "element", [[Value]]: _v_ }.
           1. Set _value_.["1"] to be _parts_.
@@ -303,7 +300,7 @@
         1. If _lf_ does not have an [[InitializedListFormat]] internal slot, throw a *TypeError* exception.
         1. If _list_ is not provided or is *undefined*, then
           1. Return an empty String.
-        1. Let _x_ be ? ToArray(_list_).
+        1. Let _x_ be ? IterableToList(_list_).
         1. Return ? FormatList(_lf_, _x_).
       </emu-alg>
     </emu-clause>
@@ -321,7 +318,7 @@
         1. If _lf_ does not have an [[InitializedListFormat]] internal slot, throw a *TypeError* exception.
         1. If _list_ is not provided or is *undefined*, then
           1. Return an empty Array.
-        1. Let _x_ be ? ToArray(_list_).
+        1. Let _x_ be ? IterableToList(_list_).
         1. Return ? FormatListToParts(_lf_, _x_).
       </emu-alg>
     </emu-clause>
