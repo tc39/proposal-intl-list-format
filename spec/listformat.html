@@ -192,7 +192,7 @@
       </p>
 
       <emu-alg>
-        1. If NewTarget is *undefined*, let _newTarget_ be the active function object, else let _newTarget_ be NewTarget.
+        1. If NewTarget is *undefined*, throw a *TypeError* exception.
         1. Let _listFormat_ be OrdinaryCreateFromConstructor(_newTarget_, *%ListFormatPrototype%*).
         1. Return InitializeListFormat(_listFormat_, _locales_, _options_).
       </emu-alg>
