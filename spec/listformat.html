@@ -20,19 +20,19 @@
         1. Else
           1. Let _options_ be ? ToObject(_options_).
         1. Let _opt_ be a new Record.
-        1. Let _t_ be GetOption(_options_, *"type"*, *"string"*, «*"regular"*, *"unit"*», *"regular"*).
+        1. Let _t_ be GetOption(_options_, `"type"`, `"string"`, «`"regular"`, `"unit"`», `"regular"`).
         1. Set _listFormat_.[[Type]] to _t_.
-        1. Let _s_ be GetOption(_options_, *"style"*, *"string"*, «*"long"*, *"short"*, *"narrow"*, *"long"*).
+        1. Let _s_ be GetOption(_options_, `"style"`, `"string"`, «`"long"`, `"short"`, `"narrow"`, `"long"`).
         1. Set _listFormat_.[[Style]] to _s_.
         1. Let _localeData_ be *%ListFormat%*.[[LocaleData]].
         1. Let _r_ be ResolveLocale(*%ListFormat%*.[[AvailableLocales]], _requestedLocales_, _opt_, *undefined*, _localeData_).
         1. Let _dataLocale_ be _r_.[[DataLocale]].
         1. Let _dataLocaleData_ be Get(_localeData_, _dataLocale_).
         1. Let _templates_ be Get(Get(_dataLocaleData_, _t_), _s_).
-        1. Set _listFormat_.[[Template2]] to be the value of Get(_templates_, *"2"*).
-        1. Set _listFormat_.[[TemplateStart]] to be the value of Get(_templates_, *"start"*).
-        1. Set _listFormat_.[[TemplateMiddle]] to be the value of Get(_templates_, *"middle"*).
-        1. Set _listFormat_.[[TemplateEnd]] to be the value of Get(_templates_, *"end"*).
+        1. Set _listFormat_.[[Template2]] to be the value of Get(_templates_, `"2"`).
+        1. Set _listFormat_.[[TemplateStart]] to be the value of Get(_templates_, `"start"`).
+        1. Set _listFormat_.[[TemplateMiddle]] to be the value of Get(_templates_, `"middle"`).
+        1. Set _listFormat_.[[TemplateEnd]] to be the value of Get(_templates_, `"end"`).
         1. Set _listFormat_.[[Locale]] to the value of _r_.[[Locale]].
         1. Set _listFormat_.[[InitializedListFormat]] to *true*.
         1. Return _listFormat_.
@@ -73,13 +73,13 @@
           1. Let _part_ to be _parts_.[_i_].
           1. If _i_ % 2 is *0*, then
             1. If _part_.length is &gt; *0*, then
-              1. Add new part record { [[Type]]: *"literal"*, [[Value]]: _part_ } as a new element on the list _result_.
+              1. Add new part record { [[Type]]: `"literal"`, [[Value]]: _part_ } as a new element on the list _result_.
           1. Else,
             1. If ? HasOwnProperty(_placeables_, _part_), then
               1. Throw a TypeError exception..
             1. Set _subst_ to _placeables_.[[_part_]].
             1. If Type(_subst_) is a List, then
-              1. Let _len_ be ? ToLength(? Get(_subst_, *"length"*)).
+              1. Let _len_ be ? ToLength(? Get(_subst_, `"length"`)).
               1. Set _i_ to *0*.
               1. Repeat, while _i_ &lt; _len_
                 1. Add _subst_.[_i_] as a new element on the list _result_.
@@ -107,7 +107,7 @@
         1. If _len_ is *1*, then
           1. Let _result_ be a new empty List.
           1. Let _value_ be _list_[0].
-          1. Add new part record { [[Type]]: *"element"*, [[Value]]: _value_ } as a new element of the list _result_.
+          1. Add new part record { [[Type]]: `"element"`, [[Value]]: _value_ } as a new element of the list _result_.
           1. Return _result_.
         1. If _len_ is *2*, then
           1. Let _pattern_ be _listFormat_.[[Template2]].
@@ -249,7 +249,7 @@
       </p>
 
       <ul>
-        <li>[[LocaleData]][Locale] must have a formats property for all locale values. The value of this property must be an object, which must have properties with the names of the two list formatting types: *"regular"* and *"unit"*. Each object must have properties with the names of three formatting styles: *"long"*, *"short"* and *"narrow"*. Each of those properties must be objects themselves, and each must have properties with names: *"2"*, *"start"*, *"middle"* and *"end"*. Each of those properties must be a template string as specified in LDML List Format Rules.</li>
+        <li>[[LocaleData]][Locale] must have a formats property for all locale values. The value of this property must be an object, which must have properties with the names of the two list formatting types: `"regular"` and `"unit"`. Each object must have properties with the names of three formatting styles: `"long"`, `"short"` and `"narrow"`. Each of those properties must be objects themselves, and each must have properties with names: `"2"`, `"start"`, `"middle"` and `"end"`. Each of those properties must be a template string as specified in LDML List Format Rules.</li>
       </ul>
 
       <emu-note>
@@ -280,7 +280,7 @@
       <h1>Intl.ListFormat.prototype[ @@toStringTag ]</h1>
 
       <p>
-        The initial value of the @@toStringTag property is the string value *"Object"*.
+        The initial value of the @@toStringTag property is the string value `"Object"`.
       </p>
       <p>
         This property has the attributes { [[Writable]]: *false*, [[Enumerable]]: *false*, [[Configurable]]: *true* }.
@@ -352,8 +352,8 @@
 
     <ul>
       <li>[[Locale]] is a String value with the language tag of the locale whose localization is used by the list format styles.</li>
-      <li>[[Type]] is one of the String values *"regular"*, or *"unit"*, identifying the list of types used.</li>
-      <li>[[Style]] is one of the String values *"long"*, *"short"*, or *"narrow"*, identifying the list formatting style used.</li>
+      <li>[[Type]] is one of the String values `"regular"`, or `"unit"`, identifying the list of types used.</li>
+      <li>[[Style]] is one of the String values `"long"`, `"short"`, or `"narrow"`, identifying the list formatting style used.</li>
     </ul>
   </emu-clause>
 </emu-clause>
