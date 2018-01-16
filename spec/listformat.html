@@ -112,11 +112,11 @@
           1. Let _listValue1_ be _list_[0].
           1. Let _listValue2_ be _list_[1].
           1. Let _value_ be a new placeable record.
-          1. Set _value_.["0"] to be new part record { [[Type]]: "element", [[Value]]: _listValue1_ }.
-          1. Set _value_.["1"] to be new part record { [[Type]]: "element", [[Value]]: _listValue2_ }.
+          1. Set _value_.["0"] to be new part record { [[Type]]: `"element"`, [[Value]]: _listValue1_ }.
+          1. Set _value_.["1"] to be new part record { [[Type]]: `"element"`, [[Value]]: _listValue2_ }.
           1. Return DeconstructPattern(_pattern_, _value_).
         1. Let _v_ be _list_[_len_ - 1].
-        1. Set _parts_ to be a new part record { [[Type]]: "element", [[Value]]: _v_ }.
+        1. Set _parts_ to be a new part record { [[Type]]: `"element"`, [[Value]]: _v_ }.
         1. Set _i_ to _len_ - *2*.
         1. Repeat, while _i_ &gt; -1
           1. If _i_ equals _len_ - *2*, then
@@ -128,7 +128,7 @@
           1. Let _value_ be a new placeable record.
           1. Set _v_ to _list_[_i_].
           1. If Type(_v_) is not String, throw a *TypeError* exception.
-          1. Set _value_.["0"] to be new part record { [[Type]]: "element", [[Value]]: _v_ }.
+          1. Set _value_.["0"] to be new part record { [[Type]]: `"element"`, [[Value]]: _v_ }.
           1. Set _value_.["1"] to be _parts_.
           1. Set _parts_ to be the result of DeconstructPattern(_template_, _value_).
           1. Set _i_ to _i_ - 1.
@@ -166,8 +166,8 @@
         1. Let _n_ be 0.
         1. For each _part_ in _parts_, do:
           1. Let _O_ be ObjectCreate(%ObjectPrototype%).
-          1. Perform ? CreateDataPropertyOrThrow(_O_, "type", _part_.[[Type]]).
-          1. Perform ? CreateDataPropertyOrThrow(_O_, "value", _part_.[[Value]]).
+          1. Perform ? CreateDataPropertyOrThrow(_O_, `"type"`, _part_.[[Type]]).
+          1. Perform ? CreateDataPropertyOrThrow(_O_, `"value"`, _part_.[[Value]]).
           1. Perform ? CreateDataProperty(_result_, ? ToString(_n_), _O_).
           1. Increment _n_ by 1.
         1. Return _result_.
@@ -193,7 +193,7 @@
 
       <emu-alg>
         1. If NewTarget is *undefined*, throw a *TypeError* exception.
-        1. Let _listFormat_ be OrdinaryCreateFromConstructor(_newTarget_, *%ListFormatPrototype%*).
+        1. Let _listFormat_ be OrdinaryCreateFromConstructor(NewTarget, `"%ListFormatPrototype%"`).
         1. Return InitializeListFormat(_listFormat_, _locales_, _options_).
       </emu-alg>
     </emu-clause>
