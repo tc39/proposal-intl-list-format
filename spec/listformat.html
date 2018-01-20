@@ -18,7 +18,7 @@
         1. Else
           1. Let _options_ be ? ToObject(_options_).
         1. Let _opt_ be a new Record.
-        1. Let _t_ be GetOption(_options_, `"type"`, `"string"`, «`"regular"`, `"unit"`», `"regular"`).
+        1. Let _t_ be GetOption(_options_, `"type"`, `"string"`, «`"conjunction"`, `"disjunction"`, `"unit"`», `"conjunction"`).
         1. Set _listFormat_.[[Type]] to _t_.
         1. Let _s_ be GetOption(_options_, `"style"`, `"string"`, «`"long"`, `"short"`, `"narrow"`, `"long"`).
         1. Set _listFormat_.[[Style]] to _s_.
@@ -247,7 +247,7 @@
       </p>
 
       <ul>
-        <li>[[LocaleData]][Locale] must have a formats property for all locale values. The value of this property must be an object, which must have properties with the names of the two list formatting types: `"regular"` and `"unit"`. Each object must have properties with the names of three formatting styles: `"long"`, `"short"` and `"narrow"`. Each of those properties must be objects themselves, and each must have properties with names: `"2"`, `"start"`, `"middle"` and `"end"`. Each of those properties must be a template string as specified in LDML List Format Rules.</li>
+        <li>[[LocaleData]][Locale] must have a formats property for all locale values. The value of this property must be an object, which must have properties with the names of the three list formatting types: `"conjunction"`, `"disjunction"`, and `"unit"`. Each object must have properties with the names of three formatting styles: `"long"`, `"short"` and `"narrow"`. Each of those properties must be objects themselves, and each must have properties with names: `"2"`, `"start"`, `"middle"` and `"end"`. Each of those properties must be a template string as specified in LDML List Format Rules.</li>
       </ul>
 
       <emu-note>
@@ -350,7 +350,7 @@
 
     <ul>
       <li>[[Locale]] is a String value with the language tag of the locale whose localization is used by the list format styles.</li>
-      <li>[[Type]] is one of the String values `"regular"`, or `"unit"`, identifying the list of types used.</li>
+      <li>[[Type]] is one of the String values `"conjunction"`, `"disjunction"`, or `"unit"`, identifying the list of types used.</li>
       <li>[[Style]] is one of the String values `"long"`, `"short"`, or `"narrow"`, identifying the list formatting style used.</li>
     </ul>
   </emu-clause>
