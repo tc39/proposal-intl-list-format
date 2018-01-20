@@ -251,7 +251,11 @@
       </ul>
 
       <emu-note>
-        It is recommended that implementations use the locale data provided by the Common Locale Data Repository (available at <a href="http://cldr.unicode.org/">http://cldr.unicode.org/</a>).
+        It is recommended that implementations use the locale data provided by the Common Locale Data Repository (available at <a href="http://cldr.unicode.org/">http://cldr.unicode.org/</a>). In <a href="http://unicode.org/reports/tr35/tr35-general.html#ListPatterns">LDML's listPattern</a>, `"conjuction"` corresponds to "standard", `"disjuntion"` corresponds to "or", and `"unit"` corresponds to "unit".
+      </emu-note>
+
+      <emu-note>
+        Among the list types, `"conjunction"` stands for "and"-based lists (e.g., "A, B and C"), `"disjunction"` stands for "or"-based lists (e.g., "A, B or C"), and `"unit"` stands for lists of values with units (e.g., "5 pounds, 12 ounces").
       </emu-note>
     </emu-clause>
   </emu-clause>
