@@ -12,7 +12,7 @@ Backpointers
 
 * https://github.com/tc39/ecma402/issues/33
 * http://cldr.unicode.org/translation/lists
-* http://unicode.org/reports/tr35/tr35-general.html#ListPatterns
+* https://unicode.org/reports/tr35/tr35-general.html#ListPatterns
 
 ### Authors
 
@@ -45,5 +45,5 @@ console.log(o.format(['foo', 'bar', 'baz']); // "foo, bar, and baz"
 ```bash
 npm install
 npm run build
-open index.html
+open out/index.html
 ```

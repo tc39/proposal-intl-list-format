@@ -1,0 +1,34 @@
+{
+  "https://tc39.github.io/ecma402/": [
+    {
+      "type": "clause",
+      "number": "9.1",
+      "id": "sec-internal-slots"
+    },
+    {
+      "type": "term",
+      "term": "%StringProto_indexOf%",
+      "id": "sec-402-well-known-intrinsic-objects"
+    },
+    {
+      "type": "op",
+      "aoid": "GetOption",
+      "id": "sec-getoption"
+    },
+    {
+      "type": "op",
+      "aoid": "ResolveLocale",
+      "id": "sec-resolvelocale"
+    },
+    {
+      "type": "op",
+      "aoid": "CanonicalizeLocaleList",
+      "id": "sec-canonicalizelocalelist"
+    },
+    {
+      "type": "op",
+      "aoid": "SupportedLocales",
+      "id": "sec-supportedlocales"
+    }
+  ]
+}
