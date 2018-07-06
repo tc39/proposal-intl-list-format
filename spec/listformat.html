@@ -5,7 +5,7 @@
     <h1>Abstract Operations for ListFormat Objects</h1>
 
     <emu-clause id="sec-deconstructpattern" aoid="DeconstructPattern">
-      <h1>DeconstructPattern (_pattern_, _placeables_)</h1>
+      <h1>DeconstructPattern ( _pattern_, _placeables_ )</h1>
 
       <p>
         The DeconstructPattern abstract operation is called with arguments _pattern_ (which must be a String) and _placeables_ (which must be a Record), and deconstructs the pattern string into a list of parts.
@@ -58,7 +58,7 @@
     </emu-clause>
 
     <emu-clause id="sec-createpartsfromlist" aoid="CreatePartsFromList">
-      <h1>CreatePartsFromList (_listFormat_, _list_)</h1>
+      <h1>CreatePartsFromList ( _listFormat_, _list_ )</h1>
 
       <p>
         The CreatePartsFromList abstract operation is called with arguments _listFormat_ (which must be an object initialized as a ListFormat) and _list_ (which must be a List of String values), and creates the corresponding list of parts according to the effective locale and the formatting options of _listFormat_.
@@ -96,7 +96,7 @@
     </emu-clause>
 
     <emu-clause id="sec-formatlist" aoid="FormatList">
-      <h1>FormatList(_listFormat_, _list_)</h1>
+      <h1>FormatList ( _listFormat_, _list_ )</h1>
 
       <p>
         The FormatList abstract operation is called with arguments _listFormat_ (which must be an object initialized as a ListFormat) and _list_ (which must be a List of String values), and performs the following steps:
@@ -113,7 +113,7 @@
     </emu-clause>
 
     <emu-clause id="sec-formatlisttoparts" aoid="FormatListToParts">
-      <h1>FormatListToParts(listFormat, list)</h1>
+      <h1>FormatListToParts ( _listFormat_, _list_ )</h1>
 
       <p>
         The FormatListToParts abstract operation is called with arguments _listFormat_ (which must be an object initialized as a ListFormat) and _list_ (which must be a List of String values), and performs the following steps:
@@ -135,7 +135,7 @@
     </emu-clause>
 
     <emu-clause id="sec-createstringlistfromiterable" aoid="StringListFromIterable">
-      <h1>StringListFromIterable (_iterable_)</h1>
+      <h1>StringListFromIterable ( _iterable_ )</h1>
 
       <p>The abstract operation StringListFromIterable performs the following steps:</p>
       <emu-alg>
@@ -230,10 +230,6 @@
         1. Let _requestedLocales_ be ? CanonicalizeLocaleList(_locales_).
         1. Return ? SupportedLocales(_availableLocales_, _requestedLocales_, _options_).
       </emu-alg>
-
-      <p>
-        The value of the `length` property of the *supportedLocalesOf* method is 1.
-      </p>
     </emu-clause>
 
     <emu-clause id="sec-Intl.ListFormat-internal-slots">
