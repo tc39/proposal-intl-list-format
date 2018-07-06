@@ -5,7 +5,7 @@
     <h1>Abstract Operations for ListFormat Objects</h1>
 
     <emu-clause id="sec-InitializeListFormat" aoid="InitializeListFormat">
-      <h1>InitializeListFormat (listFormat, locales, options)</h1>
+      <h1>InitializeListFormat ( _listFormat_, _locales_, _options_ )</h1>
 
       <p>
         The abstract operation InitializeListFormat accepts the arguments _listFormat_ (which must be an Object), _locales_, and _options_. It initializes _listFormat_ as a ListFormat object. It performs the following steps:
@@ -39,7 +39,7 @@
     </emu-clause>
 
     <emu-clause id="sec-deconstructpattern" aoid="DeconstructPattern">
-      <h1>DeconstructPattern (pattern, placeables)</h1>
+      <h1>DeconstructPattern ( _pattern_, _placeables_ )</h1>
 
       <p>
         The *DeconstructPattern* abstract operation is called with arguments _pattern_ (which must be a String) and _placeables_ (which must be a Record), and deconstructs the pattern string into a list of parts.
@@ -88,7 +88,7 @@
     </emu-clause>
 
     <emu-clause id="sec-createpartsfromlist" aoid="CreatePartsFromList">
-      <h1>CreatePartsFromList (listFormat, list)</h1>
+      <h1>CreatePartsFromList ( _listFormat_, _list_ )</h1>
 
       <p>
         The *CreatePartsFromList* abstract operation is called with arguments
@@ -137,7 +137,7 @@
     </emu-clause>
 
     <emu-clause id="sec-formatlist" aoid="FormatList">
-      <h1>FormatList(listFormat, list)</h1>
+      <h1>FormatList( _listFormat_, _list_ )</h1>
 
       <p>
         The FormatList abstract operation is called with arguments _listFormat_ (which must be an object initialized as a ListFormat) and _list_ (which must be an Array), and performs the following steps:
@@ -154,7 +154,7 @@
     </emu-clause>
 
     <emu-clause id="sec-formatlisttoparts" aoid="FormatListToParts">
-      <h1>FormatListToParts(listFormat, list)</h1>
+      <h1>FormatListToParts( _listFormat_, _list_ )</h1>
 
       <p>
         The FormatListToParts abstract operation is called with arguments _listFormat_ (which must be an object initialized as a ListFormat) and _list_ (which must be an Array), and performs the following steps:
@@ -185,7 +185,7 @@
 
 
     <emu-clause id="sec-Intl.ListFormat">
-      <h1>Intl.ListFormat([ locales [, options]])</h1>
+      <h1>Intl.ListFormat([ _locales_ [, _options_ ]])</h1>
 
       <p>
         When the *Intl.ListFormat* function is called with optional arguments the following steps are taken:
@@ -218,7 +218,7 @@
     </emu-clause>
 
     <emu-clause id="sec-Intl.ListFormat.supportedLocalesOf">
-      <h1>Intl.ListFormat.supportedLocalesOf (locales [, options ])</h1>
+      <h1>Intl.ListFormat.supportedLocalesOf ( _locales_ [, _options_ ])</h1>
 
       <p>
         When the *supportedLocalesOf* method of *%ListFormat%* is called, the following steps are taken:
@@ -290,7 +290,7 @@
     </emu-clause>
 
     <emu-clause id="sec-Intl.ListFormat.prototype.format">
-      <h1>Intl.ListFormat.prototype.format ([ list ])</h1>
+      <h1>Intl.ListFormat.prototype.format ([ _list_ ])</h1>
 
       <p>
         Intl.ListFormat.prototype.format is an accessor property whose set accessor function is *undefined*. Its get accessor function performs the following steps:
@@ -308,7 +308,7 @@
     </emu-clause>
 
     <emu-clause id="sec-Intl.ListFormat.prototype.formatToParts">
-      <h1>Intl.ListFormat.prototype.formatToParts ([ list ])</h1>
+      <h1>Intl.ListFormat.prototype.formatToParts ([ _list_ ])</h1>
 
       <p>
         Intl.ListFormat.prototype.format is an accessor property whose set accessor function is *undefined*. Its get accessor function performs the following steps:
