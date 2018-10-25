@@ -176,7 +176,7 @@
 
       <emu-alg>
         1. If NewTarget is *undefined*, throw a *TypeError* exception.
-        1. Let _listFormat_ be ? OrdinaryCreateFromConstructor(NewTarget, `"%ListFormatPrototype%"`, &laquo; [[InitializedListFormat]], [[Locale]], [[Type]], [[Style]] &raquo;).
+        1. Let _listFormat_ be ? OrdinaryCreateFromConstructor(NewTarget, `"%ListFormatPrototype%"`, &laquo; [[InitializedListFormat]], [[Locale]], [[Type]], [[Style]], [[TemplatePair]], [[TemplateStart]], [[TemplateMiddle]], [[TemplateEnd]] &raquo;).
         1. Let _requestedLocales_ be ? CanonicalizeLocaleList(_locales_).
         1. If _options_ is *undefined*, then
           1. Let _options_ be ObjectCreate(*null*).
@@ -394,6 +394,10 @@
       <li>[[Locale]] is a String value with the language tag of the locale whose localization is used by the list format styles.</li>
       <li>[[Type]] is one of the String values `"conjunction"`, `"disjunction"`, or `"unit"`, identifying the list of types used.</li>
       <li>[[Style]] is one of the String values `"long"`, `"short"`, or `"narrow"`, identifying the list formatting style used.</li>
+      <li>[[TemplatePair]] is a template for lists of size two. It is expected to contain substrings `"{0}"` and `"{1}"`.</li>
+      <li>[[TemplateStart]] is a template for lists of size greater than two, to be used at the start of the output. It is expected to contain substrings `"{0}"` and `"{1}"`.</li>
+      <li>[[TemplateMiddle]] is a template for lists of size greater than two, to be used in the middle of the output. It is expected to contain substrings `"{0}"` and `"{1}"`.</li>
+      <li>[[TemplateEnd]] is a template for lists of size greater than two, to be used at the end of the output. It is expected to contain substrings `"{0}"` and `"{1}"`.</li>
     </ul>
   </emu-clause>
 </emu-clause>
