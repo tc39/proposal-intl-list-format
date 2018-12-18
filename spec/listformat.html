@@ -183,15 +183,15 @@
         1. Else
           1. Let _options_ be ? ToObject(_options_).
         1. Let _opt_ be a new Record.
+        1. Let _matcher_ be ? GetOption(_options_, `"localeMatcher"`, `"string"`, &laquo; `"lookup"`, `"best fit"` &raquo;, `"best fit"`).
+        1. Set _opt_.[[localeMatcher]] to _matcher_.
+        1. Let _localeData_ be %ListFormat%.[[LocaleData]].
+        1. Let _r_ be ResolveLocale(%ListFormat%.[[AvailableLocales]], _requestedLocales_, _opt_, %ListFormat%.[[RelevantExtensionKeys]], _localeData_).
         1. Let _type_ be GetOption(_options_, `"type"`, `"string"`, &laquo; `"conjunction"`, `"disjunction"`, `"unit"` &raquo;, `"conjunction"`).
         1. Set _listFormat_.[[Type]] to _type_.
         1. Let _style_ be GetOption(_options_, `"style"`, `"string"`, &laquo; `"long"`, `"short"`, `"narrow"` &raquo;, `"long"`).
         1. Set _listFormat_.[[Style]] to _style_.
-        1. Let _localeData_ be %ListFormat%.[[LocaleData]].
-        1. Let _matcher_ be ? GetOption(_options_, `"localeMatcher"`, `"string"`, &laquo; `"lookup"`, `"best fit"` &raquo;, `"best fit"`).
-        1. Set _opt_.[[localeMatcher]] to _matcher_.
         1. If _style_ is `"narrow"` and _type_ is not `"unit"`, throw a *RangeError* exception.
-        1. Let _r_ be ResolveLocale(%ListFormat%.[[AvailableLocales]], _requestedLocales_, _opt_, %ListFormat%.[[RelevantExtensionKeys]], _localeData_).
         1. Let _dataLocale_ be _r_.[[dataLocale]].
         1. Let _dataLocaleData_ be _localeData_.[[&lt;_dataLocale_&gt;]].
         1. Let _dataLocaleTypes_ be _dataLocaleData_.[[&lt;_type_&gt;]].
