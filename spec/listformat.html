@@ -187,6 +187,7 @@
         1. Set _opt_.[[localeMatcher]] to _matcher_.
         1. Let _localeData_ be %ListFormat%.[[LocaleData]].
         1. Let _r_ be ResolveLocale(%ListFormat%.[[AvailableLocales]], _requestedLocales_, _opt_, %ListFormat%.[[RelevantExtensionKeys]], _localeData_).
+        1. Set _listFormat_.[[Locale]] to _r_.[[locale]].
         1. Let _type_ be ? GetOption(_options_, `"type"`, `"string"`, &laquo; `"conjunction"`, `"disjunction"`, `"unit"` &raquo;, `"conjunction"`).
         1. Set _listFormat_.[[Type]] to _type_.
         1. If _type_ is `"unit"`,
@@ -203,7 +204,6 @@
         1. Set _listFormat_.[[TemplateStart]] to _templates_.[[Start]].
         1. Set _listFormat_.[[TemplateMiddle]] to _templates_.[[Middle]].
         1. Set _listFormat_.[[TemplateEnd]] to _templates_.[[End]].
-        1. Set _listFormat_.[[Locale]] to _r_.[[locale]].
         1. Return _listFormat_.
       </emu-alg>
     </emu-clause>
