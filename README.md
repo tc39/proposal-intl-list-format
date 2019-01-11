@@ -82,7 +82,7 @@ The locale matching algorithm to use. Possible values are `"lookup"` and `"best 
 ##### `type`
 
 
-The format of output message. Possible values are  `"conjunction"` that stands for for "and"-based lists (default, e.g., `A, B, and C`), or `"disjunction"` that stands for "or"-based lists (e.g., `A, B, or C`). `"unit"` stands for lists of values with units (e.g., `5 pounds, 12 ounces`).
+The format of output message. Possible values are  `"conjunction"` that stands for "and"-based lists (default, e.g., `A, B, and C`), or `"disjunction"` that stands for "or"-based lists (e.g., `A, B, or C`). `"unit"` stands for lists of values with units (e.g., `5 pounds, 12 ounces`).
 
 
 ##### `style`
