@@ -1,4 +1,4 @@
-# `Intl.ListFormat` API Specification [draft]  
+# `Intl.ListFormat` API Specification
 
 ## Overview
 
@@ -75,19 +75,51 @@ Optional. A string with a BCP 47 language tag, or an array of such strings. For 
 
 Optional. An object with some or all of the following properties:
 
-##### `localeMatcher`
+* ##### `localeMatcher`
 
 The locale matching algorithm to use. Possible values are `"lookup"` and `"best fit"`; the default is `"best fit"`. For information about this option, see the  [`Intl` page](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl#Locale_negotiation).
 
-##### `type`
+* ##### `style`
+
+The length of the formated message. Possible values are: `"long"` (default, e.g., `A, B, and C`); `"short"` or `"narrow"` (e.g., `A, B,C`). when style is `narrow`, `unit` is the only allowed value for the type option.
+
+* ##### `type`
 
 
 The format of output message. Possible values are  `"conjunction"` that stands for "and"-based lists (default, e.g., `A, B, and C`), or `"disjunction"` that stands for "or"-based lists (e.g., `A, B, or C`). `"unit"` stands for lists of values with units (e.g., `5 pounds, 12 ounces`).
 
+#### `Intl.ListFormat.prototype.format(list)` 
 
-##### `style`
+The Intl.ListFormat.prototype.format method formats a list according to the locale and formatting options of this Intl.ListFormat object.
 
-The length of the formated message. Possible values are: `"long"` (default, e.g., `A, B, and C`); `"short"` or `"narrow"` (e.g., `A, B,C`). when style is `narrow`, `unit` is the only allowed value for the type option.
+#### Example
+
+```js
+const list = ['Motorcycle', 'Bus', 'Car'];
+
+ console.log(new Intl.ListFormat('en-GB', { style: 'long', type: 'conjunction' }).format(list));
+// > Motorcycle, Bus and Car
+
+ console.log(new Intl.ListFormat('en-GB', { style: 'short', type: 'disjunction' }).format(list));
+// > Motorcycle, Bus or Car
+
+ console.log(new Intl.ListFormat('en-GB', { style: 'narrow', type: 'unit' }).format(list));
+// > Motorcycle Bus Car
+```
+
+#### `Intl.ListFormat.prototype.formatToParts(list)` 
+
+The Intl.ListFormat.prototype.formatToParts() method is a version of the `format` method which it returns an array of objects which represent "parts" of the object, separating the formatted list into its constituent parts and separating it from other surrounding text. 
+
+#### Example
+
+```js
+const list = ['Motorcycle', 'Bus', 'Car'];
+console.log(new Intl.ListFormat('en-GB', { style: 'long', type: 'conjunction' }).formatToParts(list));
+ 
+[ { "type": "element", "value": "Motorcycle" }, { "type": "literal", "value": ", " }, { "type": "element", "value": "Truck" }, { "type": "literal", "value": ", and " }, { "type": "element", "value": "Car" } ]
+```
+
 
 
 ## Development
