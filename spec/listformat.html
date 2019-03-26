@@ -190,11 +190,7 @@
         1. Set _listFormat_.[[Locale]] to _r_.[[locale]].
         1. Let _type_ be ? GetOption(_options_, `"type"`, `"string"`, &laquo; `"conjunction"`, `"disjunction"`, `"unit"` &raquo;, `"conjunction"`).
         1. Set _listFormat_.[[Type]] to _type_.
-        1. If _type_ is `"unit"`,
-          1. Let _allowedStyles_ be &laquo; `"long"`, `"short"`, `"narrow"` &raquo;.
-        1. Else,
-          1. Let _allowedStyles_ be &laquo; `"long"`, `"short"` &raquo;.
-        1. Let _style_ be ? GetOption(_options_, `"style"`, `"string"`, _allowedStyles_, `"long"`).
+        1. Let _style_ be ? GetOption(_options_, `"style"`, `"string"`, &laquo; `"long"`, `"short"`, `"narrow"` &raquo;, `"long"`).
         1. Set _listFormat_.[[Style]] to _style_.
         1. Let _dataLocale_ be _r_.[[dataLocale]].
         1. Let _dataLocaleData_ be _localeData_.[[&lt;_dataLocale_&gt;]].
