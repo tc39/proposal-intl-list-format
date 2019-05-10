@@ -196,13 +196,9 @@
         1. Let _dataLocaleData_ be _localeData_.[[&lt;_dataLocale_&gt;]].
         1. Let _dataLocaleTypes_ be _dataLocaleData_.[[&lt;_type_&gt;]].
         1. Let _templates_ be _dataLocaleTypes_.[[&lt;_style_&gt;]].
-        1. Call VerifyListPattern(_templates_.[[Pair]]).
         1. Set _listFormat_.[[TemplatePair]] to _templates_.[[Pair]].
-        1. Call VerifyListPattern(_templates_.[[Start]]).
         1. Set _listFormat_.[[TemplateStart]] to _templates_.[[Start]].
-        1. Call VerifyListPattern(_templates_.[[Middle]]).
         1. Set _listFormat_.[[TemplateMiddle]] to _templates_.[[Middle]].
-        1. Call VerifyListPattern(_templates_.[[End]]).
         1. Set _listFormat_.[[TemplateEnd]] to _templates_.[[End]].
         1. Return _listFormat_.
       </emu-alg>
@@ -411,10 +407,14 @@
       <li>[[Locale]] is a String value with the language tag of the locale whose localization is used by the list format styles.</li>
       <li>[[Type]] is one of the String values `"conjunction"`, `"disjunction"`, or `"unit"`, identifying the list of types used.</li>
       <li>[[Style]] is one of the String values `"long"`, `"short"`, or `"narrow"`, identifying the list formatting style used.</li>
-      <li>[[TemplatePair]] is a template for lists of size two. It is expected to contain substrings `"{0}"` and `"{1}"` in that order.</li>
-      <li>[[TemplateStart]] is a template for lists of size greater than two, to be used at the start of the output. It is expected to contain substrings `"{0}"` and `"{1}"` in that order.</li>
-      <li>[[TemplateMiddle]] is a template for lists of size greater than two, to be used in the middle of the output. It is expected to contain substrings `"{0}"` and `"{1}"` in that order.</li>
-      <li>[[TemplateEnd]] is a template for lists of size greater than two, to be used at the end of the output. It is expected to contain substrings `"{0}"` and `"{1}"` in that order.</li>
+      <li>[[TemplatePair]] is a template for lists of size two. It is expected to be a valid template pattern, as described below.</li>
+      <li>[[TemplateStart]] is a template for lists of size greater than two, to be used at the start of the output. It is expected to be a valid template pattern, as described below.</li>
+      <li>[[TemplateMiddle]] is a template for lists of size greater than two, to be used in the middle of the output. It is expected to be a valid template pattern, as described below.</li>
+      <li>[[TemplateEnd]] is a template for lists of size greater than two, to be used at the end of the output. It is expected to be a valid template pattern, as described below.</li>
     </ul>
+
+    <p>
+      The four internal slots [[TemplatePair]], [[TemplateStart]], [[TemplateMiddle]], and [[TemplateEnd]] are all expected to be valid template patterns.  They should each contain one instance of the substring `"{0}"` and once instance of the substring `"{1}"`, and the substring `"{0}"` should occur before the substring `"{1}"`.
+    </p>
   </emu-clause>
 </emu-clause>
