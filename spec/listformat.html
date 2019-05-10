@@ -203,20 +203,6 @@
         1. Return _listFormat_.
       </emu-alg>
     </emu-clause>
-
-    <emu-clause id="sec-verifylistpattern" aoid="VerifyListPattern">
-      <h1>VerifyListPattern( _pattern_ )</h1>
-
-      <p>
-        The VerifyListPattern abstract operation is called with argument _pattern_ to verify that it is a valid pattern for list formatting, performing the following steps:
-      </p>
-
-      <emu-alg>
-        1. Assert: _pattern_ contains the substring `"{0}"` exactly once.
-        1. Assert: _pattern_ contains the substring `"{1}"` exactly once.
-        1. Assert: the substring `"{0}"` occurs earlier than the substring `"{1}"` in _pattern_.
-      </emu-alg>
-    </emu-clause>
   </emu-clause>
 
   <emu-clause id="sec-properties-of-intl-listformat-constructor">
