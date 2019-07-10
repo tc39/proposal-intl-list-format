@@ -31,7 +31,8 @@ __Stage 3__
 
 Implementation Progress
 
-* Polyfill: https://github.com/zbraniecki/IntlListFormat
+* Polyfill: https://github.com/zbraniecki/IntlListFormat , 
+* Polyfill: https://github.com/wessberg/intl-list-format/ (New)
 
 Backpointers
 
