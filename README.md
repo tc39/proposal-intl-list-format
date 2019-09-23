@@ -32,7 +32,8 @@ __Stage 3__
 Implementation Progress
 
 * Polyfill: https://github.com/zbraniecki/IntlListFormat , 
-* Polyfill: https://github.com/wessberg/intl-list-format/ (New)
+* Polyfill: https://github.com/wessberg/intl-list-format
+* [Browser Compatibility](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ListFormat#Browser_compatibility)
 
 Backpointers
 
