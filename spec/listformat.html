@@ -87,8 +87,7 @@
           1. Else,
             1. Let _pattern_ be _listFormat_.[[TemplateEnd]].
           1. Let _head_ be a new Record { [[Type]]: `"element"`, [[Value]]: _list_[_i_] }.
-          1. Let _tail_ be a new Record { [[Type]]: `"element"`, [[Value]]: _parts_ }.
-          1. Let _placeables_ be a new Record { [[0]]: _head_, [[1]]: _tail_ }.
+          1. Let _placeables_ be a new Record { [[0]]: _head_, [[1]]: _parts_ }.
           1. Set _parts_ to DeconstructPattern(_pattern_, _placeables_).
           1. Decrement _i_ by 1.
         1. Return _parts_.
