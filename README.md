@@ -31,6 +31,8 @@ __Stage 3__
 
 Implementation Progress
 
+* [Shipped in Chrome 72](https://v8.dev/features/intl-listformat)
+* [Shipped behind the flag in Firefox 71](https://bugzilla.mozilla.org/show_bug.cgi?id=1433306)
 * Polyfill: https://github.com/zbraniecki/IntlListFormat , 
 * Polyfill: https://github.com/wessberg/intl-list-format
 * [Browser Compatibility](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ListFormat#Browser_compatibility)
