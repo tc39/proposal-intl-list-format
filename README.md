@@ -22,8 +22,6 @@ lf.format(['Motorcycle', 'Truck' , 'Car']);
 // > "Motorcycle, Truck, and Car"
 ```
 
- >  When style is `narrow`, `unit` is the only allowed value for the type option
-
 
 ### Implementation Status
 
