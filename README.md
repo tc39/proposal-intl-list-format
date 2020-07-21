@@ -25,7 +25,7 @@ lf.format(['Motorcycle', 'Truck' , 'Car']);
 
 ### Implementation Status
 
-__Stage 3__
+__Stage 4__
 
 Implementation Progress
 
