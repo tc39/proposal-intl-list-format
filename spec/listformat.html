@@ -48,11 +48,11 @@
       </emu-alg>
     </emu-clause>
 
-    <emu-clause id="sec-createpartsfromlist" aoid="CreatePartsFromList">
-      <h1>CreatePartsFromList ( _listFormat_, _list_ )</h1>
+    <emu-clause id="sec-createpartsfromrecordlist" aoid="CreatePartsFromRecordList">
+      <h1>CreatePartsFromRecordList ( _listFormat_, _list_ )</h1>
 
       <p>
-        The CreatePartsFromList abstract operation is called with arguments _listFormat_ (which must be an object initialized as a ListFormat) and _list_ (which must be a List of String values), and creates the corresponding list of parts according to the effective locale and the formatting options of _listFormat_.
+        The CreatePartsFromRecordList abstract operation is called with arguments _listFormat_ (which must be an object initialized as a ListFormat) and _list_ (which must be a List of Record values), and creates the corresponding list of parts according to the effective locale and the formatting options of _listFormat_.
         Each part is a Record with two fields: [[Type]], which must be a string with values "element" or "literal", and [[Value]] which must be a string or a number.
         The following steps are taken:
       </p>
@@ -64,12 +64,9 @@
         1. If _size_ is 2, then
           1. Let _n_ be an index into _listFormat_.[[Templates]] based on _listFormat_.[[Locale]], _list_[0], and _list_[1].
           1. Let _pattern_ be _listFormat_.[[Templates]][_n_].[[Pair]].
-          1. Let _first_ be a new Record { [[Type]]: `"element"`, [[Value]]: _list_[0] }.
-          1. Let _second_ be a new Record { [[Type]]: `"element"`, [[Value]]: _list_[1] }.
-          1. Let _placeables_ be a new Record { [[0]]: _first_, [[1]]: _second_ }.
+          1. Let _placeables_ be a new Record { [[0]]: _list_[0], [[1]]: _list_[1] }.
           1. Return DeconstructPattern(_pattern_, _placeables_).
-        1. Let _last_ be a new Record { [[Type]]: `"element"`, [[Value]]: _list_[_size_ - 1] }.
-        1. Let _parts_ be &laquo; _last_ &raquo;.
+        1. Let _parts_ be &laquo; _list_[_size_ - 1] &raquo;.
         1. Let _i_ be _size_ - 2.
         1. Repeat, while _i_ &ge; 0
           1. Let _n_ be an implementation-defined index into _listFormat_.[[Templates]] based on _listFormat_.[[Locale]], _head_, and _parts_.
@@ -79,11 +76,31 @@
             1. Let _pattern_ be _listFormat_.[[Templates]][_n_].[[Middle]].
           1. Else,
             1. Let _pattern_ be _listFormat_.[[Templates]][_n_].[[End]].
-          1. Let _head_ be a new Record { [[Type]]: `"element"`, [[Value]]: _list_[_i_] }.
-          1. Let _placeables_ be a new Record { [[0]]: _head_, [[1]]: _parts_ }.
+          1. Let _placeables_ be a new Record { [[0]]: _list_[_i_], [[1]]: _parts_ }.
           1. Set _parts_ to DeconstructPattern(_pattern_, _placeables_).
           1. Decrement _i_ by 1.
         1. Return _parts_.
+      </emu-alg>
+
+      <emu-note>
+        The index _n_ to select across multiple templates permits the conjunction to be dependent on the context, as in Spanish, where "y" or "e" may be selected, dependending on the following word.
+      </emu-note>
+    </emu-clause>
+
+    <emu-clause id="sec-createpartsfromstringlist" aoid="CreatePartsFromStringList">
+      <h1>CreatePartsFromStringList ( _listFormat_, _list_ )</h1>
+
+      <p>
+        The CreatePartsFromStringList abstract operation is called with arguments _listFormat_ (which must be an object initialized as a ListFormat) and _list_ (which must be a List of String values), and creates the corresponding list of parts according to the effective locale and the formatting options of _listFormat_.
+        Each part is a Record with two fields: [[Type]], which must be a string with values "element" or "literal", and [[Value]] which must be a string or a number.
+        The following steps are taken:
+      </p>
+
+      <emu-alg>
+        1. Let _recordList_ be « ».
+        1. For each element _s_ of _list_ in List order, do
+          1. Append a new Record { [[Type]]: `"element"`, [[Value]]: _s_ } to _recordList_.
+        1. Return ! CreatePartsFromRecordList(_listFormat_, _recordList_).
       </emu-alg>
 
       <emu-note>
@@ -99,7 +116,7 @@
       </p>
 
       <emu-alg>
-        1. Let _parts_ be CreatePartsFromList(_listFormat_, _list_).
+        1. Let _parts_ be CreatePartsFromStringList(_listFormat_, _list_).
         1. Let _result_ be an empty String.
         1. For each _part_ in _parts_, do
           1. Set _result_ to a String value produced by concatenating _result_ and _part_.[[Value]].
@@ -116,7 +133,7 @@
       </p>
 
       <emu-alg>
-        1. Let _parts_ be CreatePartsFromList(_listFormat_, _list_).
+        1. Let _parts_ be CreatePartsFromStringList(_listFormat_, _list_).
         1. Let _result_ be ArrayCreate(0).
         1. Let _n_ be 0.
         1. For each _part_ in _parts_, do
